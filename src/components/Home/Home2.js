@@ -23,7 +23,7 @@ function Home2() {
               <i>
                 <b className="purple">
                   {" "}
-                  JavaScript, C++, Rust, Node.js, and Java{" "}
+                  JavaScript, Php, C, Node.js, Wordpress, TailwindCss, React Native, Figma{" "}
                 </b>
               </i>
               enabling me to work across both backend and frontend ecosystems. I
@@ -40,12 +40,20 @@ function Home2() {
               <br />
               Beyond technology, I have a deep passion for music. I enjoy
               playing guitar and have also explored music production. I’ve
-              released an original song on YouTube titled
-              <b className="purple"> “Nyano Jhari.”</b>
+              released an original song on YouTube titled{" "}
+              <b > <a
+                href="https://www.youtube.com/@avihs010"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="purple"
+                style={{ textDecoration: "none" }}
+              >
+              Nyano Jhari
+              </a></b>.
               <br />
               <br />
-              While coding is my profession, music remains my creative escape,
-              a space where I explore, express, and recharge.
+              While coding is my profession, music remains my creative escape, a
+              space where I explore, express, and recharge.
               <br />
               <br />
               Whenever possible, I love building projects with
