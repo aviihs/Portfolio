@@ -1,7 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import {
   AiFillGithub,
-  AiOutlineTwitter,
   AiFillInstagram,
   AiOutlineYoutube,
 } from "react-icons/ai";
