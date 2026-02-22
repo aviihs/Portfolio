@@ -8,6 +8,7 @@ import editor from "../../Assets/Projects/codeEditor.png";
 import chatify from "../../Assets/Projects/chatify.png";
 import suicide from "../../Assets/Projects/suicide.png";
 import bitsOfCode from "../../Assets/Projects/blog.png";
+import { FaMusic } from "react-icons/fa";
 
 function Projects() {
   return (
@@ -25,10 +26,26 @@ function Projects() {
             <ProjectCard
               imgPath={chatify}
               isBlog={false}
-              title="Chatify"
-              description="Personal Chat Room or Workspace to share resources and hangout with friends build with react.js, Material-UI, and Firebase. Have features which allows user for realtime messaging, image sharing as well as supports reactions on messages."
-              ghLink="https://github.com/soumyajit4419/Chatify"
-              demoLink="https://chatify-49.web.app/"
+              title="Bike Management System"
+              description={
+                <>
+                  A web-based Bike Management System developed using Core PHP
+                  and MySQL. The system includes a secure admin panel with full
+                  CRUD functionality, allowing efficient management of bike
+                  records and data handling. This project demonstrates my
+                  practical knowledge of backend logic, database operations, and
+                  admin workflow design.
+                  <br />
+                  <br />
+                  <strong>Admin Panel Access:</strong>
+                  <br />
+                  Username: bhusalshiva010@gmail.com
+                  <br />
+                  Password: bhusalshiva010@gmail.com
+                </>
+              }
+              ghLink="https://github.com/aviihs/php/tree/main/bikeManagementSystem"
+              demoLink="https://bikemanagement.free.nf/"
             />
           </Col>
 
@@ -36,21 +53,26 @@ function Projects() {
             <ProjectCard
               imgPath={bitsOfCode}
               isBlog={false}
-              title="Bits-0f-C0de"
-              description="My personal blog page build with Next.js and Tailwind Css which takes the content from makdown files and renders it using Next.js. Supports dark mode and easy to write blogs using markdown."
-              ghLink="https://github.com/soumyajit4419/Bits-0f-C0de"
-              demoLink="https://blogs.soumya-jit.tech/"
-            />
-          </Col>
-
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={editor}
-              isBlog={false}
-              title="Editor.io"
-              description="Online code and markdown editor build with react.js. Online Editor which supports html, css, and js code with instant view of website. Online markdown editor for building README file which supports GFM, Custom Html tags with toolbar and instant preview.Both the editor supports auto save of work using Local Storage"
-              ghLink="https://github.com/soumyajit4419/Editor.io"
-              demoLink="https://editor.soumya-jit.tech/"              
+              title="Basic Restro App"
+              description={
+                <>
+                  A simple restaurant-themed mobile application built while
+                  learning React Native. This project focuses on applying core
+                  React Native fundamentals, including components, layout
+                  structuring, navigation, and basic UI design. It represents my
+                  hands-on practice in building native interfaces and
+                  understanding mobile app development concepts.
+                  <br />
+                  <br />
+                  <strong>
+                    Note: To Download this app, You can click demo link and then
+                    you will be redirect to download apk file of the app.
+                    Suitable for only android devices.
+                  </strong>
+                </>
+              }
+              ghLink="https://github.com/aviihs/internNative/tree/main/basic_homeTab"
+              demoLink="https://github.com/aviihs/react-native/tree/main/basicRestroApp"
             />
           </Col>
 
@@ -58,36 +80,48 @@ function Projects() {
             <ProjectCard
               imgPath={leaf}
               isBlog={false}
-              title="Plant AI"
-              description="Used the plant disease dataset from Kaggle and trained a image classifer model using 'PyTorch' framework using CNN and Transfer Learning with 38 classes of various plant leaves. The model was successfully able to detect diseased and healthy leaves of 14 unique plants. I was able to achieve an accuracy of 98% by using Resnet34 pretrained model."
-              ghLink="https://github.com/soumyajit4419/Plant_AI"
-              demoLink="https://plant49-ai.herokuapp.com/"
-            />
-          </Col>
-
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={suicide}
-              isBlog={false}
-              title="Ai For Social Good"
-              description="Using 'Natural Launguage Processing' for the detection of suicide-related posts and user's suicide ideation in cyberspace  and thus helping in sucide prevention."
-              ghLink="https://github.com/soumyajit4419/AI_For_Social_Good"
-              // demoLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" <--------Please include a demo link here
-            />
-          </Col>
-
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={emotion}
-              isBlog={false}
-              title="Face Recognition and Emotion Detection"
-              description="Trained a CNN classifier using 'FER-2013 dataset' with Keras and tensorflow backened. The classifier sucessfully predicted the various types of emotions of human. And the highest accuracy obtained with the model was 60.1%.
-              Then used Open-CV to detect the face in an image and then pass the face to the classifer to predict the emotion of a person."
-              ghLink="https://github.com/soumyajit4419/Face_And_Emotion_Detection"
-              // demoLink="https://blogs.soumya-jit.tech/"      <--------Please include a demo link here 
+              title="Websocket"
+              description="A real-time communication system built using WebSockets and Node.js. This project demonstrates bidirectional communication between client and server, enabling live updates and interactive user experiences in web applications."
+              ghLink="https://github.com/soumyajit4419/Websocket"
+              demoLink="https://websocket-demo.soumya-jit.tech/"
             />
           </Col>
         </Row>
+      </Container>
+
+      <Container
+        fluid
+        className="project-section2"
+        style={{ paddingTop: "80px" }}
+      >
+        <Particle />
+        <Container>
+          <h1 className="project-heading">
+            Interest in{" "}
+            <strong className="purple">
+              Music <FaMusic />
+            </strong>
+          </h1>
+
+          <p style={{ color: "white" }}>
+            Alongside development, I have a deep passion for music and creative
+            expression. Here is one of my original creations.
+          </p>
+
+          <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
+            <Col md={4} className="project-card">
+              <ProjectCard
+                videoLink="https://www.youtube.com/embed/KwApRqUZDGc"
+                isBlog={false}
+                title="Nyano Jhari"
+                description="An original Nepali song inspired by personal emotions and creativity.
+    This project reflects my strong interest in music, where I explore mood,
+    melody, and artistic storytelling beyond programming."
+                demoLink="https://www.youtube.com/watch?v=KwApRqUZDGc"
+              />
+            </Col>
+          </Row>
+        </Container>
       </Container>
     </Container>
   );
