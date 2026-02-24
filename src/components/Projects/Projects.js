@@ -3,8 +3,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
 import leaf from "../../Assets/Projects/leaf.png";
-import chatify from "../../Assets/Projects/chatify.png";
-import bitsOfCode from "../../Assets/Projects/blog.png";
+import bike from "../../Assets/Projects/bike.png";
+import mobile from "../../Assets/Projects/mobile.png";
 import { FaMusic } from "react-icons/fa";
 
 function Projects() {
@@ -21,7 +21,7 @@ function Projects() {
         <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={chatify}
+              imgPath={bike}
               isBlog={false}
               title="Bike Management System"
               description={
@@ -48,7 +48,7 @@ function Projects() {
 
           <Col md={4} className="project-card">
             <ProjectCard
-              imgPath={bitsOfCode}
+              imgPath={mobile}
               isBlog={false}
               title="Basic Restro App"
               description={
