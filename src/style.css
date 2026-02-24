@@ -446,6 +446,14 @@ button:focus {
   padding: 0 !important;
 }
 
+footer.react-activity-calendar__footer {
+  display: flex !important; 
+  justify-content: center !important;
+  align-items: center !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
+
 .blockquote-footer {
   color: #a588c0 !important;
 }

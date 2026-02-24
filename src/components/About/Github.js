@@ -9,9 +9,6 @@ function Github() {
         justifyContent: "center",
         paddingBottom: "10px",
         color: "white",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
       }}
     >
       <h1 className="project-heading pb-4" style={{ paddingBottom: "20px" }}>
@@ -23,6 +20,7 @@ function Github() {
         blockMargin={10}
         color="#c084f5"
         fontSize={20}
+        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
       />
     </Row>
   );
