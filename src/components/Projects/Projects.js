@@ -79,8 +79,8 @@ function Projects() {
               isBlog={false}
               title="Websocket"
               description="A real-time communication system built using WebSockets and Node.js. This project demonstrates bidirectional communication between client and server, enabling live updates and interactive user experiences in web applications."
-              ghLink="https://github.com/soumyajit4419/Websocket"
-              demoLink="https://websocket-demo.soumya-jit.tech/"
+              ghLink="#"
+              demoLink="#"
             />
           </Col>
         </Row>
