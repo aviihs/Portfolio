@@ -9,6 +9,9 @@ function Github() {
         justifyContent: "center",
         paddingBottom: "10px",
         color: "white",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
       }}
     >
       <h1 className="project-heading pb-4" style={{ paddingBottom: "20px" }}>
