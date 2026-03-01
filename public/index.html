@@ -1,41 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Shiva Bhusal | React & Full Stack Developer from Nepal</title>
+    <meta
+      name="description"
+      content="Shiva Bhusal is a Full Stack Developer and React Native Engineer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music."
+    />
+    <meta
+      name="keywords"
+      content="Shiva Bhusal, React Developer Nepal, Full Stack Developer, Portfolio, Web Developer Kathmandu, JavaScript Developer"
+    />
+    <meta name="author" content="Shiva Bhusal" />
+    <meta name="robots" content="index, follow" />
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <title>Shiva Bhusal | Portfolio</title>
-  <meta name="description" content="Self Developed personal website build with React.js">
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Shiva Bhusal | Portfolio" />
+    <meta
+      name="description"
+      content="Shiva Bhusal is a Full Stack Developer and React Native Engineer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music."
+    />
+    <meta
+      property="og:image"
+      content="https://bhusalshiva.com.np/og-image.jpg"
+    />
+    <meta itemprop="image" content="https://bhusalshiva.com.np/og-image.jpg" />
 
-  <!-- Google / Search Engine Tags -->
-  <meta itemprop="name" content="Shiva Bhusal | Portfolio">
-  <meta itemprop="description" content="Self Developed personal website build with React.js">
-  <meta itemprop="image"
-    content="https://instagram.fktm3-1.fna.fbcdn.net/v/t51.29350-15/433168338_310333871741344_1746479468656889426_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjEzNjV4MTM2NS5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UuYzEifQ&_nc_ht=instagram.fktm3-1.fna.fbcdn.net&_nc_cat=104&_nc_oc=Q6cZ2QECK9782Cllt5qHziBV3hO6ajP4IywIPAEn9236xjP8qLOC4BHGezqG88u6vmiBjMo-uYkY2gGyxP5z-J3y2fTm&_nc_ohc=2vFeOod48w4Q7kNvwH4m0LJ&_nc_gid=Jh0508oXk8rWEVLagE3Dmw&edm=AP4sbd4BAAAA&ccb=7-5&ig_cache_key=MzMyNTcxODQwOTQyNTY4NzA0NQ%3D%3D.3-ccb7-5&oh=00_AftmtQdtv3s8ION1ks9HaPCYhofjabOH920riZrXBgNK0g&oe=69A3110E&_nc_sid=7a9f4b">
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://bhusalshiva.com.np" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Shiva Bhusal | Portfolio" />
+    <meta
+      property="og:description"
+      content="Shiva Bhusal is a Full Stack Developer and React Native Engineer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music."
+    />
+    <meta
+      property="og:image"
+      content="https://bhusalshiva.com.np/og-image.jpg"
+    />
 
-  <!-- Facebook Meta Tags -->
-  <meta property="og:url" content="https://bhusalshiva.com.np">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Shiva Bhusal | Portfolio">
-  <meta property="og:description" content="Self Developed personal website build with React.js">
-  <meta property="og:image"
-    content="https://instagram.fktm3-1.fna.fbcdn.net/v/t51.29350-15/433168338_310333871741344_1746479468656889426_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjEzNjV4MTM2NS5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UuYzEifQ&_nc_ht=instagram.fktm3-1.fna.fbcdn.net&_nc_cat=104&_nc_oc=Q6cZ2QECK9782Cllt5qHziBV3hO6ajP4IywIPAEn9236xjP8qLOC4BHGezqG88u6vmiBjMo-uYkY2gGyxP5z-J3y2fTm&_nc_ohc=2vFeOod48w4Q7kNvwH4m0LJ&_nc_gid=Jh0508oXk8rWEVLagE3Dmw&edm=AP4sbd4BAAAA&ccb=7-5&ig_cache_key=MzMyNTcxODQwOTQyNTY4NzA0NQ%3D%3D.3-ccb7-5&oh=00_AftmtQdtv3s8ION1ks9HaPCYhofjabOH920riZrXBgNK0g&oe=69A3110E&_nc_sid=7a9f4b">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Shiva Bhusal | Portfolio" />
+    <meta
+      name="description"
+      content="Shiva Bhusal is a Full Stack Developer and React Native Engineer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music."
+    />
+    <meta
+      name="twitter:image"
+      content="https://bhusalshiva.com.np/og-image.jpg"
+    />
 
-  <!-- Youtube Meta Tags -->
-  <meta name="youtube:card" content="summary_large_image">
-  <meta name="youtube:title" content="Shiva Bhusal | Portfolio">
-  <meta name="youtube:description" content="Self Developed personal website build with React.js">
-  <meta name="youtube:image"
-    content="https://instagram.fktm3-1.fna.fbcdn.net/v/t51.29350-15/433168338_310333871741344_1746479468656889426_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjEzNjV4MTM2NS5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UuYzEifQ&_nc_ht=instagram.fktm3-1.fna.fbcdn.net&_nc_cat=104&_nc_oc=Q6cZ2QECK9782Cllt5qHziBV3hO6ajP4IywIPAEn9236xjP8qLOC4BHGezqG88u6vmiBjMo-uYkY2gGyxP5z-J3y2fTm&_nc_ohc=2vFeOod48w4Q7kNvwH4m0LJ&_nc_gid=Jh0508oXk8rWEVLagE3Dmw&edm=AP4sbd4BAAAA&ccb=7-5&ig_cache_key=MzMyNTcxODQwOTQyNTY4NzA0NQ%3D%3D.3-ccb7-5&oh=00_AftmtQdtv3s8ION1ks9HaPCYhofjabOH920riZrXBgNK0g&oe=69A3110E&_nc_sid=7a9f4b">
-</head>
+    <!-- Link canonical -->
+    <link rel="canonical" href="https://bhusalshiva.com.np/" />
+    <!-- Keywords -->
+    <meta
+      name="keywords"
+      content="Shiva Bhusal, Bhusal Shiva, Shiva Waling, Shiva Developer Nepal, Full Stack Developer Nepal, React Developer Nepal, React Native Developer Nepal, Web Developer Nepal, App Developer Nepal, PHP Developer Nepal, WordPress Developer Nepal, SEO Expert Nepal"
+    />
+  </head>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-</body>
-
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
