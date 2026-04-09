@@ -8,6 +8,7 @@ import Java from "../../Assets/TechIcons/Java.svg";
 import Python from "../../Assets/TechIcons/Python.svg";
 import Typescript from "../../Assets/TechIcons/Typescript.svg";
 import Git from "../../Assets/TechIcons/Git.svg";
+import Flutter from "../../Assets/TechIcons/Flutter.webp";
 import Mongo from "../../Assets/TechIcons/Mongo.svg";
 import SQL from "../../Assets/TechIcons/SQL.svg";
 import Redux from "../../Assets/TechIcons/Redux.svg";
@@ -43,6 +44,10 @@ function Techstack() {
       <Col xs={4} md={2} className="tech-icons">
         <img src={Mongo} alt="mongoDb" />
         <div className="tech-icons-text">Mongo DB</div>
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <img src={Flutter} alt="flutter" />
+        <div className="tech-icons-text">Flutter</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
         <img src={Redux} alt="redux" />
