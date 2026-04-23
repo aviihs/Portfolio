@@ -33,7 +33,17 @@ function Home() {
 
               <div style={{ padding: 50, textAlign: "left" }}>
                 <Type />
-              </div>
+
+                  <a
+                    href="https://www.upwork.com/freelancers/~0180edf192f8c7cba8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hire-btn-premium"
+                  >
+                    Start a Project 💼
+                  </a>
+                  
+                </div>
             </Col>
 
             <Col md={5} style={{ paddingBottom: 20 }}>

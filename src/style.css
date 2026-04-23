@@ -261,7 +261,8 @@ button:focus {
 
 .home-section {
   position: relative;
-  z-index: -1;
+  /* z-index: -1; */
+  z-index: 1;
   /* background-image: var(--image-gradient), url(./Assets/home-bg.jpg); */
   background-position: top center;
   background-repeat: no-repeat;
@@ -729,4 +730,63 @@ footer.react-activity-calendar__footer {
 }
 .fork-btn-inner::after {
   display: none !important;
+}
+
+.hire-btn-premium {
+
+  display: inline-block;
+  padding: 14px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+
+  /* Gradient */
+  background: linear-gradient(135deg, #667eea, #764ba2);
+
+  /* Glass effect */
+  backdrop-filter: blur(10px);
+
+  /* Shadow */
+  box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
+
+  /* Smooth animation */
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px !important;
+}
+
+/* Glow effect layer */
+.hire-btn-premium::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+/* Hover effects */
+.hire-btn-premium:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(118, 75, 162, 0.6);
+}
+
+/* Shine animation */
+.hire-btn-premium:hover::before {
+  left: 100%;
+}
+
+/* Click feel */
+.hire-btn-premium:active {
+  transform: scale(0.95);
 }
