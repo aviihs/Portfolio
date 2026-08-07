@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../style.css";
-import "../App.css";
+import "./globals.css";
 import ClientShell from "../components/Layout/ClientShell";
 
 const siteUrl = "https://bhusalshiva.com.np";
@@ -30,6 +28,17 @@ export const metadata: Metadata = {
     "SEO Expert Nepal",
   ],
   authors: [{ name: "Shiva Bhusal" }],
+  icons: {
+    icon: [
+      {
+        url: "/new-fav.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/new-fav.png",
+    apple: "/new-fav.png",
+  },
+  manifest: "/manifest.json",
   alternates: {
     canonical: "/",
   },
