@@ -609,6 +609,14 @@ footer.react-activity-calendar__footer {
   justify-content: center;
 }
 
+.resume-frame {
+  width: min(100%, 980px);
+  min-height: 80vh;
+  border: 0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
 .resume-left {
   padding-right: 80px !important;
 }

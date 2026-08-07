@@ -1,3 +1,5 @@
+"use client";
+
 import { Col, Row } from "react-bootstrap";
 import { SiNextdotjs } from "react-icons/si";
 import C from "../../Assets/TechIcons/C++.svg";
@@ -20,29 +22,29 @@ function Techstack() {
   return (
     <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={C} alt="C++" />
+        <img src={C.src} alt="C++" />
         <div className="tech-icons-text">C++</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Javascript} alt="javascript" />
+        <img src={Javascript.src} alt="javascript" />
         <div className="tech-icons-text">Javascript</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Typescript} alt="typescript" />
+        <img src={Typescript.src} alt="typescript" />
         <div className="tech-icons-text">Typescript</div>
       </Col>
     
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Node} alt="node" />
+        <img src={Node.src} alt="node" />
         <div className="tech-icons-text">Node.Js</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={ReactIcon} alt="react" />
+        <img src={ReactIcon.src} alt="react" />
         <div className="tech-icons-text">React.Js</div>
       </Col>
       
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Mongo} alt="mongoDb" />
+        <img src={Mongo.src} alt="mongoDb" />
         <div className="tech-icons-text">Mongo DB</div>
       </Col>
       {/* <Col xs={4} md={2} className="tech-icons">
@@ -50,7 +52,7 @@ function Techstack() {
         <div className="tech-icons-text">Flutter</div>
       </Col> */}
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Redux} alt="redux" />
+        <img src={Redux.src} alt="redux" />
         <div className="tech-icons-text">Redux</div>
       </Col>
 
@@ -59,7 +61,7 @@ function Techstack() {
         <div className="tech-icons-text">Next.js</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Git} alt="git" />
+        <img src={Git.src} alt="git" />
         <div className="tech-icons-text">Git</div>
       </Col>
      
@@ -67,32 +69,32 @@ function Techstack() {
      
 
       <Col xs={4} md={2} className="tech-icons">
-        <img src={SQL} alt="SQL" />
+        <img src={SQL.src} alt="SQL" />
         <div className="tech-icons-text">Postgresql</div>
       </Col>
 
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Python} alt="Python" />
+        <img src={Python.src} alt="Python" />
         <div className="tech-icons-text">Python</div>
       </Col>
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Java} alt="haskell" />
+        <img src={Java.src} alt="haskell" />
         <div className="tech-icons-text">Java</div>
       </Col>
      
 
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Tailwind} alt="tailwind" />
+        <img src={Tailwind.src} alt="tailwind" />
         <div className="tech-icons-text">Tailwind CSS</div>
       </Col>
 
       <Col xs={4} md={2} className="tech-icons">
-        <img src={MUI} alt="mui" />
+        <img src={MUI.src} alt="mui" />
         <div className="tech-icons-text">Material UI</div>
       </Col>
 
       <Col xs={4} md={2} className="tech-icons">
-        <img src={Postman} alt="Postman" />
+        <img src={Postman.src} alt="Postman" />
         <div className="tech-icons-text">Postman</div>
       </Col>
     </Row>

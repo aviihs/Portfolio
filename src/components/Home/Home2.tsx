@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import myImg from "../../Assets/avatar.svg";
@@ -66,7 +68,7 @@ function Home2() {
           </Col>
           <Col md={4} className="myAvtar">
             <Tilt>
-              <img src={myImg} className="img-fluid" alt="avatar" />
+              <img src={myImg.src} className="img-fluid" alt="avatar" />
             </Tilt>
           </Col>
         </Row>

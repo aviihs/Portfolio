@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
@@ -33,7 +35,7 @@ function About() {
               style={{ paddingTop: "120px", paddingBottom: "50px" }}
               className="about-img"
             >
-              <img src={laptopImg} alt="about" className="img-fluid" />
+              <img src={laptopImg.src} alt="about" className="img-fluid" />
             </Col>
           </Row>
           <h1 className="project-heading">
