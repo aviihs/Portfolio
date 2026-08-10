@@ -1,47 +1,225 @@
+// "use client";
+
+// import React from "react";
+// import { Container, Row, Col, Card, Badge } from "react-bootstrap";
+// import Particle from "../Particle";
+// import type { Blog } from "../../app/blogs/page";
+// import Link from "next/link";
+
+// type BlogsProps = {
+//   blogs: Blog[];
+// };
+
+// function Blogs({ blogs }: BlogsProps) {
+//   return (
+//     <main>
+//       <Container fluid className="project-section">
+//         <Particle />
+
+//         <Container>
+//           <Row
+//             style={{
+//               justifyContent: "center",
+//               paddingBottom: "30px",
+//             }}
+//           >
+//             <Col md={10} className="project-card">
+//               <h1 className="project-heading">
+//                 Shiva's <strong className="purple">Blogs</strong>
+//               </h1>
+
+//               <p
+//                 style={{
+//                   color: "white",
+//                   fontSize: "1.15rem",
+//                 }}
+//               >
+//                 Long-form notes on development, design, SEO, and building useful
+//                 digital products.
+//               </p>
+//             </Col>
+//           </Row>
+
+//           <Row>
+//             {blogs.map((blog) => (
+//               <Col md={6} lg={4} key={blog.id} className="mb-4">
+//                 <Link
+//                   href={`/blogs/${blog.slug}`}
+//                   style={{
+//                     textDecoration: "none",
+//                     color: "inherit",
+//                   }}
+//                 >
+//                   <Card className="h-100">
+//                     {blog.image && (
+//                       <Card.Img
+//                         variant="top"
+//                         src={blog.image}
+//                         alt={blog.imageAlt}
+//                       />
+//                     )}
+
+//                     <Card.Body>
+//                       <Card.Title>{blog.title}</Card.Title>
+
+//                       {blog.readingTime && (
+//                         <small>{blog.readingTime} min read</small>
+//                       )}
+
+//                       <div
+//                         dangerouslySetInnerHTML={{
+//                           __html: blog.content,
+//                         }}
+//                       />
+
+//                       {blog.techStack.length > 0 && (
+//                         <div>
+//                           {blog.techStack.map((tech) => (
+//                             <Badge key={tech} className="me-1">
+//                               {tech}
+//                             </Badge>
+//                           ))}
+//                         </div>
+//                       )}
+//                     </Card.Body>
+//                   </Card>
+//                 </Link>
+//               </Col>
+//             ))}
+//           </Row>
+//         </Container>
+//       </Container>
+//     </main>
+//   );
+// }
+
+// export default Blogs;
+
 "use client";
 
-import React from "react";
-import { Container, Row, Col, Card, Badge } from "react-bootstrap";
-import Particle from "../Particle";
-import type { Blog } from "../../app/blogs/page";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Card, Spinner } from "react-bootstrap";
 import Link from "next/link";
 
-type BlogsProps = {
-  blogs: Blog[];
+type WordPressPost = {
+  id: number;
+  slug: string;
+
+  title: {
+    rendered: string;
+  };
+
+  content: {
+    rendered: string;
+  };
+
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+      alt_text?: string;
+    }>;
+  };
 };
 
-function Blogs({ blogs }: BlogsProps) {
-  return (
-    <main>
-      <Container fluid className="project-section">
-        <Particle />
+function Blogs() {
+  const [blogs, setBlogs] = useState<WordPressPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-        <Container>
-          <Row
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch("/api/blogs");
+
+        if (!response.ok) {
+          throw new Error(`Blog API failed: ${response.status}`);
+        }
+
+        const data: WordPressPost[] = await response.json();
+
+        setBlogs(data);
+      } catch (error) {
+        console.error("BLOG API ERROR:", error);
+
+        setError("Failed to load blogs.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <main>
+        <Container
+          style={{
+            textAlign: "center",
+            padding: "100px 0",
+          }}
+        >
+          <Spinner animation="border" variant="light" />
+
+          <p
             style={{
-              justifyContent: "center",
-              paddingBottom: "30px",
+              color: "white",
+              marginTop: "20px",
             }}
           >
-            <Col md={10} className="project-card">
-              <h1 className="project-heading">
-                Shiva's <strong className="purple">Blogs</strong>
-              </h1>
+            Loading blogs...
+          </p>
+        </Container>
+      </main>
+    );
+  }
 
-              <p
-                style={{
-                  color: "white",
-                  fontSize: "1.15rem",
-                }}
-              >
-                Long-form notes on development, design, SEO, and building useful
-                digital products.
-              </p>
-            </Col>
-          </Row>
+  if (error) {
+    return (
+      <main>
+        <Container
+          style={{
+            textAlign: "center",
+            padding: "100px 0",
+          }}
+        >
+          <p style={{ color: "white" }}>{error}</p>
+        </Container>
+      </main>
+    );
+  }
 
-          <Row>
-            {blogs.map((blog) => (
+  return (
+    <main>
+      <Container>
+        <Row
+          style={{
+            justifyContent: "center",
+            paddingBottom: "30px",
+          }}
+        >
+          <Col md={10} className="project-card">
+            <h1 className="project-heading">
+              Shiva's <strong className="purple">Blogs</strong>
+            </h1>
+
+            <p
+              style={{
+                color: "white",
+                fontSize: "1.15rem",
+              }}
+            >
+              Long-form notes on development, design, SEO, and building useful
+              digital products.
+            </p>
+          </Col>
+        </Row>
+
+        <Row>
+          {blogs.map((blog) => {
+            const image = blog._embedded?.["wp:featuredmedia"]?.[0];
+
+            return (
               <Col md={6} lg={4} key={blog.id} className="mb-4">
                 <Link
                   href={`/blogs/${blog.slug}`}
@@ -51,43 +229,29 @@ function Blogs({ blogs }: BlogsProps) {
                   }}
                 >
                   <Card className="h-100">
-                    {blog.image && (
+                    {image?.source_url && (
                       <Card.Img
                         variant="top"
-                        src={blog.image}
-                        alt={blog.imageAlt}
+                        src={image.source_url}
+                        alt={image.alt_text || blog.title.rendered}
                       />
                     )}
 
                     <Card.Body>
-                      <Card.Title>{blog.title}</Card.Title>
-
-                      {blog.readingTime && (
-                        <small>{blog.readingTime} min read</small>
-                      )}
+                      <Card.Title>{blog.title.rendered}</Card.Title>
 
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: blog.content,
+                          __html: blog.content.rendered,
                         }}
                       />
-
-                      {blog.techStack.length > 0 && (
-                        <div>
-                          {blog.techStack.map((tech) => (
-                            <Badge key={tech} className="me-1">
-                              {tech}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
                     </Card.Body>
                   </Card>
                 </Link>
               </Col>
-            ))}
-          </Row>
-        </Container>
+            );
+          })}
+        </Row>
       </Container>
     </main>
   );
