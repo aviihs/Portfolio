@@ -115,9 +115,9 @@ import type { Metadata } from "next";
 import Blogs from "../../components/Blogs/Blogs";
 
 export const metadata: Metadata = {
-  title: "Blogs",
+  title: "Blogs | Shiva Bhusal",
   description:
-    "Read Shiva Bhusal's notes on development, design, SEO, React, React Native, WordPress, and building digital products.",
+    "Read Shiva Bhusal's notes on development, design, SEO, React, Next.js, WordPress, and building digital products.",
   alternates: {
     canonical: "/blogs",
   },
