@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Container } from "react-bootstrap";
-import "./Blog.css";
+import { motion } from "framer-motion";
 
 type Blog = {
   databaseId: number;
@@ -153,54 +152,59 @@ export default function Blogs() {
 
   if (loading) {
     return (
-      <main className="blogs-page">
-        <Container>
-          <div className="blogs-loading">
-            <div className="blog-loader" />
-            <p>Loading stories...</p>
+      <main className="min-h-screen px-4 py-28 text-white">
+        <div className="mx-auto grid min-h-[420px] max-w-6xl place-items-center">
+          <div className="text-center">
+            <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-2 border-white/10 border-t-violetMist" />
+            <p className="text-sm text-white/60">Loading stories...</p>
           </div>
-        </Container>
+        </div>
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="blogs-page">
-        <Container>
-          <div className="blogs-error">
-            <p>{error}</p>
+      <main className="min-h-screen px-4 py-28 text-white">
+        <div className="mx-auto grid min-h-[420px] max-w-6xl place-items-center">
+          <div className="rounded-2xl border border-red-300/15 bg-red-400/10 px-6 py-5 text-sm text-red-100">
+            {error}
           </div>
-        </Container>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="blogs-page">
-      <Container>
-        {/* Header */}
+    <main className="min-h-screen overflow-hidden px-4 py-24 text-white sm:px-6 lg:px-8">
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(88,230,198,0.14),transparent_28%),radial-gradient(circle_at_80%_15%,rgba(199,112,240,0.18),transparent_30%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
 
-        <section className="blogs-header">
-          <span className="blogs-eyebrow">
-            JOURNAL
+      <div className="mx-auto max-w-7xl">
+        <motion.section
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="mx-auto mb-14 max-w-3xl text-center"
+        >
+          <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-mintGlass shadow-glow backdrop-blur">
+            Journal
           </span>
 
-          <h1>
+          <h1 className="mt-6 text-4xl font-black leading-tight text-white sm:text-6xl lg:text-7xl">
             Ideas, stories &{" "}
-            <span>things I learn.</span>
+            <span className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
+              things I learn.
+            </span>
           </h1>
 
-          <p>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
             Long-form notes on development, design,
             SEO, and building useful digital products.
           </p>
-        </section>
+        </motion.section>
 
-        {/* Archive */}
-
-        <section className="blogs-grid">
-          {blogs.map((blog) => {
+        <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {blogs.map((blog, index) => {
             const image =
               blog.featuredImage?.node;
 
@@ -215,21 +219,23 @@ export default function Blogs() {
               blog.categories.nodes[0];
 
             return (
-              <article
+              <motion.article
                 key={blog.databaseId}
-                className={`blog-card ${
-                  blog.blog?.featuredPost
-                    ? "blog-card-featured"
-                    : ""
-                }`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.45,
+                  delay: Math.min(index * 0.06, 0.24),
+                  ease: "easeOut",
+                }}
+                className="group"
               >
                 <Link
                   href={`/blogs/${blog.slug}`}
-                  className="blog-card-link"
+                  className="block h-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.055] text-white no-underline shadow-2xl shadow-black/20 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-mintGlass/45 hover:bg-white/[0.075] hover:shadow-glow"
                 >
-                  {/* Image */}
-
-                  <div className="blog-image-wrap">
+                  <div className="relative h-60 overflow-hidden bg-white/5">
                     {image?.sourceUrl ? (
                       <img
                         src={image.sourceUrl}
@@ -237,33 +243,40 @@ export default function Blogs() {
                           image.altText ||
                           blog.title
                         }
-                        className="blog-image"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="blog-image-placeholder">
+                      <div className="grid h-full place-items-center bg-gradient-to-br from-white/10 to-violetMist/10 text-sm text-white/40">
                         No image
                       </div>
                     )}
 
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+
                     {category && (
-                      <span className="blog-category">
+                      <span className="absolute bottom-4 left-4 rounded-full border border-white/15 bg-ink/70 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
                         {category.name}
+                      </span>
+                    )}
+
+                    {blog.blog?.featuredPost && (
+                      <span className="absolute right-4 top-4 rounded-full bg-mintGlass px-3 py-1.5 text-xs font-black uppercase tracking-wider text-ink">
+                        Featured
                       </span>
                     )}
                   </div>
 
-                  {/* Meta */}
-
-                  <div className="blog-card-body">
-                    <div className="blog-meta">
-                      <div className="blog-author">
+                  <div className="flex min-h-[280px] flex-col p-5">
+                    <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-white/50">
+                      <div className="inline-flex items-center gap-2 text-white/75">
                         {author?.avatar?.url ? (
                           <img
                             src={author.avatar.url}
                             alt={author.name}
+                            className="h-7 w-7 rounded-full object-cover ring-1 ring-white/15"
                           />
                         ) : (
-                          <div className="author-placeholder">
+                          <div className="grid h-7 w-7 place-items-center rounded-full bg-violetMist text-[0.7rem] font-black text-white">
                             {author?.name
                               ?.charAt(0)
                               .toUpperCase()}
@@ -276,17 +289,17 @@ export default function Blogs() {
                         </span>
                       </div>
 
-                      <span className="blog-date">
+                      <span>
                         {formatDate(blog.date)}
                       </span>
 
                       {blog.blog?.readingTime && (
                         <>
-                          <span className="meta-dot">
+                          <span className="text-white/25">
                             ·
                           </span>
 
-                          <span className="blog-date">
+                          <span>
                             {blog.blog.readingTime} min
                             read
                           </span>
@@ -294,23 +307,23 @@ export default function Blogs() {
                       )}
                     </div>
 
-                    {/* Title */}
+                    <h2 className="line-clamp-2 text-xl font-extrabold leading-snug text-white">
+                      {blog.title}
+                    </h2>
 
-                    <h2>{blog.title}</h2>
-
-                    {/* Description */}
-
-                    <p className="blog-description">
+                    <p className="mt-3 line-clamp-4 flex-1 text-sm leading-7 text-white/58">
                       {subtitle}
                     </p>
 
-                    <div className="read-more">
-                      Read article
-                      <span>→</span>
+                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-mintGlass">
+                      <span>Read article</span>
+                      <span className="transition duration-300 group-hover:translate-x-1">
+                        →
+                      </span>
                     </div>
                   </div>
                 </Link>
-              </article>
+              </motion.article>
             );
           })}
         </section>
@@ -320,29 +333,31 @@ export default function Blogs() {
         {(pageInfo?.hasPreviousPage ||
           pageInfo?.hasNextPage) && (
           <nav
-            className="blog-pagination"
+            className="mt-14 flex flex-wrap items-center justify-center gap-3"
             aria-label="Blog pagination"
           >
             <button
               onClick={goPrevious}
               disabled={currentPage === 1}
+              className="min-w-32 rounded-full border border-white/10 bg-white/[0.055] px-5 py-3 text-sm font-bold text-white transition hover:border-mintGlass/50 hover:bg-mintGlass/10 disabled:cursor-not-allowed disabled:opacity-35"
             >
               ← Previous
             </button>
 
-            <span>
+            <span className="min-w-24 text-center text-sm text-white/55">
               Page {currentPage}
             </span>
 
             <button
               onClick={goNext}
               disabled={!pageInfo?.hasNextPage}
+              className="min-w-32 rounded-full border border-white/10 bg-white/[0.055] px-5 py-3 text-sm font-bold text-white transition hover:border-mintGlass/50 hover:bg-mintGlass/10 disabled:cursor-not-allowed disabled:opacity-35"
             >
               Next →
             </button>
           </nav>
         )}
-      </Container>
+      </div>
     </main>
   );
 }

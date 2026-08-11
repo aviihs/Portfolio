@@ -69,8 +69,11 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const WORDPRESS_GRAPHQL_URL =
-  process.env.WORDPRESS_GRAPHQL_URL;
+  process.env.WORDPRESS_GRAPHQL_URL ||
+  "https://dev-blog-post-cms.pantheonsite.io/graphql";
 
 const GET_BLOGS = `
   query GetBlogs($first: Int!, $after: String) {
