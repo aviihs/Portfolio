@@ -19,7 +19,7 @@ function ClientShell({ children }: { children: ReactNode }) {
   return (
     <>
       <Preloader load={load} />
-      <div className="App" id={load ? "no-scroll" : "scroll"}>
+      <div className={load ? "h-screen overflow-hidden" : "min-h-screen"}>
         <NavBar />
         {children}
         <Footer />

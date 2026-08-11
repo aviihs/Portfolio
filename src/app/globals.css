@@ -2,7 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "bootstrap/dist/css/bootstrap.min.css";
-@import "../index.css";
-@import "../style.css";
-@import "../App.css";
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: #080a12;
+    color: #fff;
+    font-family: "PT Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, "Liberation Mono", "Courier New", monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button:focus {
+    box-shadow: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #111827;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(199, 112, 240, 0.8);
+    border-radius: 999px;
+  }
+}
+
+#tsparticles {
+  position: fixed !important;
+  inset: 0;
+  z-index: -1;
+}

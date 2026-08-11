@@ -1,6 +1,5 @@
 "use client";
 
-import { Col, Row } from "react-bootstrap";
 import { SiNextdotjs } from "react-icons/si";
 import C from "../../Assets/TechIcons/C++.svg";
 import Javascript from "../../Assets/TechIcons/Javascript.svg";
@@ -19,85 +18,86 @@ import MUI from "../../Assets/TechIcons/MUI.svg";
 import Postman from "../../Assets/TechIcons/Postman.svg";
 
 function Techstack() {
+  const iconClass =
+    "group flex min-h-32 flex-col items-center justify-center gap-3 rounded-[1.15rem] border border-white/10 bg-white/[0.055] p-4 text-center shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-mintGlass/45 hover:shadow-glow";
+  const imageClass = "h-10 w-10 object-contain transition group-hover:scale-110";
+  const textClass = "text-sm font-bold text-white/75";
+
   return (
-    <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={C.src} alt="C++" />
-        <div className="tech-icons-text">C++</div>
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Javascript.src} alt="javascript" />
-        <div className="tech-icons-text">Javascript</div>
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Typescript.src} alt="typescript" />
-        <div className="tech-icons-text">Typescript</div>
-      </Col>
+    <div className="grid grid-cols-2 gap-4 pb-12 sm:grid-cols-3 lg:grid-cols-6">
+      <div className={iconClass}>
+        <img src={C.src} alt="C++" className={imageClass} />
+        <div className={textClass}>C++</div>
+      </div>
+      <div className={iconClass}>
+        <img src={Javascript.src} alt="javascript" className={imageClass} />
+        <div className={textClass}>Javascript</div>
+      </div>
+      <div className={iconClass}>
+        <img src={Typescript.src} alt="typescript" className={imageClass} />
+        <div className={textClass}>Typescript</div>
+      </div>
     
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Node.src} alt="node" />
-        <div className="tech-icons-text">Node.Js</div>
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={ReactIcon.src} alt="react" />
-        <div className="tech-icons-text">React.Js</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={Node.src} alt="node" className={imageClass} />
+        <div className={textClass}>Node.Js</div>
+      </div>
+      <div className={iconClass}>
+        <img src={ReactIcon.src} alt="react" className={imageClass} />
+        <div className={textClass}>React.Js</div>
+      </div>
       
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Mongo.src} alt="mongoDb" />
-        <div className="tech-icons-text">Mongo DB</div>
-      </Col>
-      {/* <Col xs={4} md={2} className="tech-icons">
-        <img src={Flutter} alt="flutter" />
-        <div className="tech-icons-text">Flutter</div>
-      </Col> */}
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Redux.src} alt="redux" />
-        <div className="tech-icons-text">Redux</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={Mongo.src} alt="mongoDb" className={imageClass} />
+        <div className={textClass}>Mongo DB</div>
+      </div>
+      <div className={iconClass}>
+        <img src={Redux.src} alt="redux" className={imageClass} />
+        <div className={textClass}>Redux</div>
+      </div>
 
-      <Col xs={4} md={2} className="tech-icons">
-        <SiNextdotjs fontSize={"24px"} />
-        <div className="tech-icons-text">Next.js</div>
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Git.src} alt="git" />
-        <div className="tech-icons-text">Git</div>
-      </Col>
+      <div className={iconClass}>
+        <SiNextdotjs className="text-4xl transition group-hover:scale-110" />
+        <div className={textClass}>Next.js</div>
+      </div>
+      <div className={iconClass}>
+        <img src={Git.src} alt="git" className={imageClass} />
+        <div className={textClass}>Git</div>
+      </div>
      
       
      
 
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={SQL.src} alt="SQL" />
-        <div className="tech-icons-text">Postgresql</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={SQL.src} alt="SQL" className={imageClass} />
+        <div className={textClass}>Postgresql</div>
+      </div>
 
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Python.src} alt="Python" />
-        <div className="tech-icons-text">Python</div>
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Java.src} alt="haskell" />
-        <div className="tech-icons-text">Java</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={Python.src} alt="Python" className={imageClass} />
+        <div className={textClass}>Python</div>
+      </div>
+      <div className={iconClass}>
+        <img src={Java.src} alt="java" className={imageClass} />
+        <div className={textClass}>Java</div>
+      </div>
      
 
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Tailwind.src} alt="tailwind" />
-        <div className="tech-icons-text">Tailwind CSS</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={Tailwind.src} alt="tailwind" className={imageClass} />
+        <div className={textClass}>Tailwind CSS</div>
+      </div>
 
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={MUI.src} alt="mui" />
-        <div className="tech-icons-text">Material UI</div>
-      </Col>
+      <div className={iconClass}>
+        <img src={MUI.src} alt="mui" className={imageClass} />
+        <div className={textClass}>Material UI</div>
+      </div>
 
-      <Col xs={4} md={2} className="tech-icons">
-        <img src={Postman.src} alt="Postman" />
-        <div className="tech-icons-text">Postman</div>
-      </Col>
-    </Row>
+      <div className={iconClass}>
+        <img src={Postman.src} alt="Postman" className={imageClass} />
+        <div className={textClass}>Postman</div>
+      </div>
+    </div>
   );
 }
 

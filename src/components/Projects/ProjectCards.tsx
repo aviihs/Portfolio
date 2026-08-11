@@ -1,12 +1,12 @@
 "use client";
 
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
 import { BsGithub } from "react-icons/bs";
 
 type ProjectCardProps = {
+  accent?: "mint" | "violet" | "amber";
   demoLink?: string;
   description: ReactNode;
   ghLink?: string;
@@ -17,6 +17,7 @@ type ProjectCardProps = {
 };
 
 function ProjectCards({
+  accent = "mint",
   demoLink,
   description,
   ghLink,
@@ -26,66 +27,82 @@ function ProjectCards({
   videoLink,
 }: ProjectCardProps) {
   const imageSrc = typeof imgPath === "string" ? imgPath : imgPath?.src;
+  const accentStyles = {
+    mint: "from-mintGlass/35 via-white/5 to-transparent",
+    violet: "from-violetMist/35 via-white/5 to-transparent",
+    amber: "from-amberSoft/30 via-white/5 to-transparent",
+  };
 
   return (
-    <Card className="project-card-view">
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      whileHover={{ y: -10, scale: 1.01 }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.055] text-white shadow-2xl shadow-black/20 backdrop-blur-xl transition-colors duration-300 hover:border-white/20"
+    >
+      <div
+        className={`pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${accentStyles[accent]} opacity-80`}
+      />
       {videoLink ? (
-        <div className="video-wrapper">
+        <div className="relative aspect-video bg-black">
           <iframe
-            width="100%"
-            height="200"
             src={videoLink}
             title={title}
             frameBorder="0"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            className="h-full w-full"
           />
         </div>
       ) : (
-        <Card.Img variant="top" src={imageSrc} alt={`${title} preview`} />
+        <div className="relative h-56 overflow-hidden">
+          <img
+            src={imageSrc}
+            alt={`${title} preview`}
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+        </div>
       )}
 
-      <Card.Body>
-        <Card.Title
-          style={{
-            marginBottom: "1rem",
-            fontWeight: "bold",
-            fontStyle: "italic",
-          }}
-        >
+      <div className="relative flex flex-1 flex-col p-5">
+        <h3 className="mb-4 text-xl font-black leading-snug">
           {title}
-        </Card.Title>
+        </h3>
 
-        <Card.Text style={{ textAlign: "justify", marginBottom: "2rem" }}>
+        <div className="flex-1 text-justify text-sm leading-7 text-white/65">
           {description}
-        </Card.Text>
+        </div>
 
-        {ghLink && ghLink !== "#" && (
-          <Button
-            variant="primary"
+        <div className="mt-6 flex flex-wrap gap-3">
+          {ghLink && ghLink !== "#" && (
+          <a
             href={ghLink}
             target="_blank"
             rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white no-underline transition hover:border-mintGlass/45 hover:text-mintGlass"
           >
-            <BsGithub /> &nbsp;
+            <BsGithub />
             {isBlog ? "Blog" : "GitHub"}
-          </Button>
-        )}
+          </a>
+          )}
 
-        {!isBlog && demoLink && demoLink !== "#" && (
-          <Button
-            variant="primary"
+          {!isBlog && demoLink && demoLink !== "#" && (
+          <a
             href={demoLink}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ marginLeft: "10px" }}
+            className="inline-flex items-center gap-2 rounded-full bg-mintGlass px-4 py-2 text-sm font-black text-ink no-underline transition hover:bg-white"
           >
-            <CgWebsite /> &nbsp; Demo
-          </Button>
-        )}
-      </Card.Body>
-    </Card>
+            <CgWebsite /> Demo
+          </a>
+          )}
+        </div>
+      </div>
+    </motion.article>
   );
 }
 

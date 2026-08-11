@@ -1,20 +1,25 @@
 "use client";
 
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { motion } from "framer-motion";
 import myImg from "../../Assets/avatar.svg";
 import Tilt from "react-parallax-tilt";
 
 function Home2() {
   return (
-    <Container fluid className="home-about-section" id="about">
-      <Container>
-        <Row>
-          <Col md={8} className="home-about-description">
-            <h1 style={{ fontSize: "2.6em" }}>
-              LET ME <span className="purple"> INTRODUCE </span> MYSELF
-            </h1>
-            <p className="home-about-body">
+    <section className="px-4 py-20 text-white sm:px-6 lg:px-8" id="about">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.3fr_0.7fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+            className="rounded-[1.5rem] border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-8"
+          >
+            <h2 className="text-3xl font-black sm:text-5xl">
+              LET ME <span className="text-mintGlass"> INTRODUCE </span> MYSELF
+            </h2>
+            <p className="mt-6 text-justify text-base leading-8 text-white/70">
               I’m a Software Engineer passionate about transforming ideas into
               reliable, scalable, and high-performance digital products. I enjoy
               solving real-world problems and crafting systems that balance
@@ -23,20 +28,20 @@ function Home2() {
               <br />
               My technical background includes
               <i>
-                <b className="purple">
+                <b className="text-mintGlass">
                   {" "}
                   JavaScript, Php, C, Node.js, Wordpress, TailwindCss, React Native, Figma{" "}
                 </b>
               </i>
               enabling me to work across both backend and frontend ecosystems. I
               have strong expertise in
-              <b className="purple"> React and Figma </b>
+              <b className="text-mintGlass"> React and Figma </b>
               along with intermediate experience in
-              <b className="purple"> WordPress</b>.
+              <b className="text-mintGlass"> WordPress</b>.
               <br />
               <br />
               Lately, I’ve been increasingly focused on
-              <b className="purple"> Application Development</b>, building fast,
+              <b className="text-mintGlass"> Application Development</b>, building fast,
               intuitive, and user-centric products.
               <br />
               <br />
@@ -47,8 +52,7 @@ function Home2() {
                 href="https://www.youtube.com/@avihs010"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="purple"
-                style={{ textDecoration: "none" }}
+                className="text-mintGlass no-underline"
               >
               Nyano Jhari
               </a></b>.
@@ -59,21 +63,26 @@ function Home2() {
               <br />
               <br />
               Whenever possible, I love building projects with
-              <b className="purple"> Node.js </b> and modern frameworks like{" "}
+              <b className="text-mintGlass"> Node.js </b> and modern frameworks like{" "}
               <i>
-                <b className="purple">React.js</b> and{" "}
-                <b className="purple">Next.js</b>.
+                <b className="text-mintGlass">React.js</b> and{" "}
+                <b className="text-mintGlass">Next.js</b>.
               </i>
             </p>
-          </Col>
-          <Col md={4} className="myAvtar">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto w-full max-w-sm"
+          >
             <Tilt>
-              <img src={myImg.src} className="img-fluid" alt="avatar" />
+              <img src={myImg.src} className="w-full" alt="avatar" />
             </Tilt>
-          </Col>
-        </Row>
-      </Container>
-    </Container>
+          </motion.div>
+      </div>
+    </section>
   );
 }
 export default Home2;
