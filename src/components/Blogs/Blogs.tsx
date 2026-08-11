@@ -4,79 +4,21 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Particle from "../Particle";
-
-type Blog = {
-  databaseId: number;
-  slug: string;
-
-  title: string;
-
-  excerpt: string;
-
-  date: string;
-
-  modified: string;
-
-  featuredImage: {
-    node: {
-      sourceUrl: string;
-      altText: string | null;
-    } | null;
-  } | null;
-
-  author: {
-    node: {
-      name: string;
-      avatar: {
-        url: string;
-      } | null;
-    } | null;
-  } | null;
-
-  categories: {
-    nodes: {
-      name: string;
-      slug: string;
-    }[];
-  };
-
-  blog: {
-    subtitle: string | null;
-    readingTime: number | null;
-    featuredPost: boolean;
-  } | null;
-};
-
-type BlogResponse = {
-  nodes: Blog[];
-  pageInfo: {
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    startCursor: string | null;
-    endCursor: string | null;
-  };
-};
-
-function stripHtml(html: string) {
-  return html
-    .replace(/<[^>]*>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .trim();
-}
-
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(date));
-}
+import {
+  BLOG_CARD_COPY,
+  BLOGS_PER_PAGE,
+  DEFAULT_AUTHOR_NAME,
+} from "../../constants/blogs";
+import {
+  formatBlogDate,
+  stripHtml,
+} from "../../lib/blog-utils";
+import type { Blog, BlogConnection } from "../../types/blog";
 
 export default function Blogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [pageInfo, setPageInfo] =
-    useState<BlogResponse["pageInfo"] | null>(null);
+    useState<BlogConnection["pageInfo"] | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -97,7 +39,7 @@ export default function Blogs() {
         window.location.origin
       );
 
-      url.searchParams.set("first", "9");
+      url.searchParams.set("first", String(BLOGS_PER_PAGE));
 
       if (after) {
         url.searchParams.set("after", after);
@@ -109,13 +51,13 @@ export default function Blogs() {
         throw new Error("Failed to fetch blogs");
       }
 
-      const data: BlogResponse = await response.json();
+      const data: BlogConnection = await response.json();
 
       setBlogs(data.nodes);
       setPageInfo(data.pageInfo);
     } catch (error) {
       console.error(error);
-      setError("Failed to load blogs.");
+      setError(BLOG_CARD_COPY.error);
     } finally {
       setLoading(false);
     }
@@ -158,7 +100,9 @@ export default function Blogs() {
         <div className="mx-auto grid min-h-[420px] max-w-6xl place-items-center">
           <div className="text-center">
             <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-2 border-white/10 border-t-violetMist" />
-            <p className="text-sm text-white/60">Loading stories...</p>
+            <p className="text-sm text-white/60">
+              {BLOG_CARD_COPY.loading}
+            </p>
           </div>
         </div>
       </main>
@@ -191,19 +135,18 @@ export default function Blogs() {
           className="mx-auto mb-14 max-w-3xl text-center"
         >
           <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-mintGlass shadow-glow backdrop-blur">
-            Journal
+            {BLOG_CARD_COPY.journal}
           </span>
 
           <h1 className="mt-6 text-4xl font-black leading-tight text-white sm:text-6xl lg:text-7xl">
-            Ideas, stories &{" "}
+            {BLOG_CARD_COPY.title}{" "}
             <span className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
-              things I learn.
+              {BLOG_CARD_COPY.titleAccent}
             </span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
-            Long-form notes on development, design,
-            SEO, and building useful digital products.
+            {BLOG_CARD_COPY.description}
           </p>
         </motion.section>
 
@@ -251,7 +194,7 @@ export default function Blogs() {
                       />
                     ) : (
                       <div className="grid h-full place-items-center bg-gradient-to-br from-white/10 to-violetMist/10 text-sm text-white/40">
-                        No image
+                        {BLOG_CARD_COPY.noImage}
                       </div>
                     )}
 
@@ -281,20 +224,19 @@ export default function Blogs() {
                           />
                         ) : (
                           <div className="grid h-7 w-7 place-items-center rounded-full bg-violetMist text-[0.7rem] font-black text-white">
-                            {author?.name
-                              ?.charAt(0)
+                            {(author?.name || DEFAULT_AUTHOR_NAME)
+                              .charAt(0)
                               .toUpperCase()}
                           </div>
                         )}
 
                         <span>
-                          {author?.name ||
-                            "Shiva Bhusal"}
+                          {author?.name || DEFAULT_AUTHOR_NAME}
                         </span>
                       </div>
 
                       <span>
-                        {formatDate(blog.date)}
+                        {formatBlogDate(blog.date)}
                       </span>
 
                       {blog.blog?.readingTime && (
@@ -320,7 +262,7 @@ export default function Blogs() {
                     </p>
 
                     <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-mintGlass">
-                      <span>Read article</span>
+                      <span>{BLOG_CARD_COPY.readArticle}</span>
                       <span className="transition duration-300 group-hover:translate-x-1">
                         →
                       </span>
@@ -345,7 +287,7 @@ export default function Blogs() {
               disabled={currentPage === 1}
               className="min-w-32 rounded-full border border-white/10 bg-white/[0.055] px-5 py-3 text-sm font-bold text-white transition hover:border-mintGlass/50 hover:bg-mintGlass/10 disabled:cursor-not-allowed disabled:opacity-35"
             >
-              ← Previous
+              {BLOG_CARD_COPY.previous}
             </button>
 
             <span className="min-w-24 text-center text-sm text-white/55">
@@ -357,7 +299,7 @@ export default function Blogs() {
               disabled={!pageInfo?.hasNextPage}
               className="min-w-32 rounded-full border border-white/10 bg-white/[0.055] px-5 py-3 text-sm font-bold text-white transition hover:border-mintGlass/50 hover:bg-mintGlass/10 disabled:cursor-not-allowed disabled:opacity-35"
             >
-              Next →
+              {BLOG_CARD_COPY.next}
             </button>
           </nav>
         )}

@@ -5,211 +5,34 @@ import {
   MotionBlock,
 } from "../../../components/Blogs/BlogMotion";
 import Particle from "../../../components/Particle";
-
-const WORDPRESS_GRAPHQL_URL =
-  process.env.WORDPRESS_GRAPHQL_URL ||
-  "https://dev-blog-post-cms.pantheonsite.io/graphql";
-
-const GET_BLOG_BY_SLUG = `
-  query GetBlogBySlug($slug: ID!) {
-    post(id: $slug, idType: SLUG) {
-      databaseId
-      title
-      slug
-      content
-      excerpt
-      date
-      modified
-
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
-
-      author {
-        node {
-          name
-          avatar {
-            url
-          }
-        }
-      }
-
-      categories {
-        nodes {
-          name
-          slug
-        }
-      }
-
-      tags {
-        nodes {
-          name
-          slug
-        }
-      }
-
-      blog {
-        subtitle
-        readingTime
-        featuredPost
-
-        relatedPosts {
-          nodes {
-            ... on Post {
-              databaseId
-              title
-              slug
-              excerpt
-
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-            }
-          }
-        }
-      }
-
-      seo {
-        title
-        metaDesc
-        canonical
-      }
-    }
-  }
-`;
-
-type RelatedPost = {
-  databaseId: number;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  featuredImage?: {
-    node?: {
-      sourceUrl: string;
-      altText: string | null;
-    } | null;
-  } | null;
-};
-
-type Blog = {
-  databaseId: number;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt: string | null;
-  date: string;
-  modified: string;
-
-  featuredImage?: {
-    node?: {
-      sourceUrl: string;
-      altText: string | null;
-    } | null;
-  } | null;
-
-  author?: {
-    node?: {
-      name: string;
-      avatar?: {
-        url: string;
-      } | null;
-    } | null;
-  } | null;
-
-  categories: {
-    nodes: {
-      name: string;
-      slug: string;
-    }[];
-  };
-
-  tags: {
-    nodes: {
-      name: string;
-      slug: string;
-    }[];
-  };
-
-  blog?: {
-    subtitle: string | null;
-    readingTime: number | null;
-    featuredPost: boolean;
-    relatedPosts?: {
-      nodes: RelatedPost[];
-    } | null;
-  } | null;
-
-  seo?: {
-    title: string | null;
-    metaDesc: string | null;
-    canonical: string | null;
-  } | null;
-};
-
-type GraphQLResponse = {
-  data?: {
-    post: Blog | null;
-  };
-  errors?: {
-    message: string;
-  }[];
-};
+import {
+  DEFAULT_AUTHOR_NAME,
+  BLOG_CARD_COPY,
+} from "../../../constants/blogs";
+import { formatBlogDetailDate } from "../../../lib/blog-utils";
+import {
+  fetchWordPressGraphQL,
+  GET_BLOG_BY_SLUG,
+} from "../../../lib/wordpress";
+import type { Blog } from "../../../types/blog";
 
 async function getBlog(slug: string): Promise<Blog | null> {
-  const response = await fetch(WORDPRESS_GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: GET_BLOG_BY_SLUG,
-      variables: {
+  try {
+    const data = await fetchWordPressGraphQL<{
+      post: Blog | null;
+    }>(
+      GET_BLOG_BY_SLUG,
+      {
         slug,
       },
-    }),
-    next: {
-      revalidate: 60,
-    },
-  });
-
-  const text = await response.text();
-
-  if (!response.ok) {
-    console.error(
-      "WordPress GraphQL error:",
-      response.status,
-      text.slice(0, 1000)
+      { revalidate: 60 }
     );
 
-    throw new Error("Failed to fetch blog from WordPress");
+    return data?.post ?? null;
+  } catch (error) {
+    console.error("Failed to load blog by slug:", error);
+    return null;
   }
-
-  let result: GraphQLResponse;
-
-  try {
-    result = JSON.parse(text);
-  } catch {
-    console.error(
-      "WordPress GraphQL returned non-JSON:",
-      text.slice(0, 1000)
-    );
-
-    throw new Error("WordPress returned invalid JSON");
-  }
-
-  if (result.errors?.length) {
-    console.error("GraphQL errors:", result.errors);
-
-    throw new Error(result.errors[0]?.message || "GraphQL query failed");
-  }
-
-  return result.data?.post ?? null;
 }
 
 type BlogPageProps = {
@@ -285,13 +108,7 @@ export default async function BlogDetailPage({
   const relatedPosts =
     blog.blog?.relatedPosts?.nodes || [];
 
-  const publishedDate = new Date(
-    blog.date
-  ).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const publishedDate = formatBlogDetailDate(blog.date);
 
   return (
     <main className="min-h-screen overflow-hidden px-4 py-24 text-white sm:px-6 lg:px-8">
@@ -342,7 +159,7 @@ export default async function BlogDetailPage({
                 />
               ) : (
                 <div className="grid h-12 w-12 place-items-center rounded-full bg-violetMist text-sm font-black">
-                  {(author?.name || "Shiva Bhusal")
+                  {(author?.name || DEFAULT_AUTHOR_NAME)
                     .charAt(0)
                     .toUpperCase()}
                 </div>
@@ -350,7 +167,7 @@ export default async function BlogDetailPage({
 
               <div>
                 <div className="font-bold text-white">
-                  {author?.name || "Shiva Bhusal"}
+                  {author?.name || DEFAULT_AUTHOR_NAME}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 text-sm text-white/55">
@@ -390,13 +207,13 @@ export default async function BlogDetailPage({
         <div
           className="blog-content mx-auto mt-12 max-w-3xl"
           dangerouslySetInnerHTML={{
-            __html: blog.content,
+            __html: blog.content || "",
           }}
         />
 
-        {blog.tags.nodes.length > 0 && (
+        {(blog.tags?.nodes.length || 0) > 0 && (
           <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-2 border-t border-white/10 pt-6">
-            {blog.tags.nodes.map((tag) => (
+            {blog.tags?.nodes.map((tag) => (
               <span
                 key={tag.slug}
                 className="rounded-full bg-violetMist/10 px-3 py-1.5 text-sm font-bold text-violet-200"
@@ -462,7 +279,7 @@ export default async function BlogDetailPage({
                       )}
 
                       <small className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-mintGlass">
-                        <span>Read article</span>
+                        <span>{BLOG_CARD_COPY.readArticle}</span>
                         <span className="transition duration-300 group-hover:translate-x-1">
                           →
                         </span>
