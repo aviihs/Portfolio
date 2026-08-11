@@ -1,91 +1,9 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import "./slug.css";
 
 const WORDPRESS_GRAPHQL_URL =
   process.env.WORDPRESS_GRAPHQL_URL ||
   "https://dev-blog-post-cms.pantheonsite.io/graphql";
-
-type BlogPost = {
-  databaseId: number;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt: string;
-  date: string;
-  modified: string;
-
-  author?: {
-    node?: {
-      name: string;
-      slug: string;
-      avatar?: {
-        url: string;
-      };
-    };
-  };
-
-  featuredImage?: {
-    node?: {
-      sourceUrl: string;
-      altText?: string;
-    };
-  };
-
-  categories: {
-    nodes: {
-      name: string;
-      slug: string;
-    }[];
-  };
-
-  tags: {
-    nodes: {
-      name: string;
-      slug: string;
-    }[];
-  };
-
-  blog?: {
-    subtitle?: string;
-    readingTime?: number;
-    featuredPost?: boolean;
-    customCtaUrl?: string;
-
-    relatedPosts?: {
-      nodes: {
-        databaseId: number;
-        title: string;
-        slug: string;
-        excerpt: string;
-
-        featuredImage?: {
-          node?: {
-            sourceUrl: string;
-            altText?: string;
-          };
-        };
-
-        blog?: {
-          subtitle?: string;
-          readingTime?: number;
-        };
-      }[];
-    };
-  };
-
-  seo?: {
-    title?: string;
-    metaDesc?: string;
-    canonical?: string;
-  };
-};
-
-type GraphQLResponse = {
-  data: {
-    post: BlogPost | null;
-  };
-};
 
 const GET_BLOG_BY_SLUG = `
   query GetBlogBySlug($slug: ID!) {
@@ -98,20 +16,19 @@ const GET_BLOG_BY_SLUG = `
       date
       modified
 
-      author {
-        node {
-          name
-          slug
-          avatar {
-            url
-          }
-        }
-      }
-
       featuredImage {
         node {
           sourceUrl
           altText
+        }
+      }
+
+      author {
+        node {
+          name
+          avatar {
+            url
+          }
         }
       }
 
@@ -133,7 +50,6 @@ const GET_BLOG_BY_SLUG = `
         subtitle
         readingTime
         featuredPost
-        customCtaUrl
 
         relatedPosts {
           nodes {
@@ -148,11 +64,6 @@ const GET_BLOG_BY_SLUG = `
                 altText
               }
             }
-
-            blog {
-              subtitle
-              readingTime
-            }
           }
         }
       }
@@ -166,7 +77,84 @@ const GET_BLOG_BY_SLUG = `
   }
 `;
 
-async function getBlog(slug: string): Promise<BlogPost | null> {
+type RelatedPost = {
+  databaseId: number;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  featuredImage?: {
+    node?: {
+      sourceUrl: string;
+      altText: string | null;
+    } | null;
+  } | null;
+};
+
+type Blog = {
+  databaseId: number;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt: string | null;
+  date: string;
+  modified: string;
+
+  featuredImage?: {
+    node?: {
+      sourceUrl: string;
+      altText: string | null;
+    } | null;
+  } | null;
+
+  author?: {
+    node?: {
+      name: string;
+      avatar?: {
+        url: string;
+      } | null;
+    } | null;
+  } | null;
+
+  categories: {
+    nodes: {
+      name: string;
+      slug: string;
+    }[];
+  };
+
+  tags: {
+    nodes: {
+      name: string;
+      slug: string;
+    }[];
+  };
+
+  blog?: {
+    subtitle: string | null;
+    readingTime: number | null;
+    featuredPost: boolean;
+    relatedPosts?: {
+      nodes: RelatedPost[];
+    } | null;
+  } | null;
+
+  seo?: {
+    title: string | null;
+    metaDesc: string | null;
+    canonical: string | null;
+  } | null;
+};
+
+type GraphQLResponse = {
+  data?: {
+    post: Blog | null;
+  };
+  errors?: {
+    message: string;
+  }[];
+};
+
+async function getBlog(slug: string): Promise<Blog | null> {
   const response = await fetch(WORDPRESS_GRAPHQL_URL, {
     method: "POST",
     headers: {
@@ -183,35 +171,50 @@ async function getBlog(slug: string): Promise<BlogPost | null> {
     },
   });
 
+  const text = await response.text();
+
   if (!response.ok) {
-    throw new Error("Failed to fetch blog");
+    console.error(
+      "WordPress GraphQL error:",
+      response.status,
+      text.slice(0, 1000)
+    );
+
+    throw new Error("Failed to fetch blog from WordPress");
   }
 
-  const result: GraphQLResponse = await response.json();
+  let result: GraphQLResponse;
 
-  return result.data.post;
+  try {
+    result = JSON.parse(text);
+  } catch {
+    console.error(
+      "WordPress GraphQL returned non-JSON:",
+      text.slice(0, 1000)
+    );
+
+    throw new Error("WordPress returned invalid JSON");
+  }
+
+  if (result.errors?.length) {
+    console.error("GraphQL errors:", result.errors);
+
+    throw new Error(result.errors[0]?.message || "GraphQL query failed");
+  }
+
+  return result.data?.post ?? null;
 }
 
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(date));
-}
-
-type PageProps = {
-  params: Promise<{
+type BlogPageProps = {
+  params: {
     slug: string;
-  }>;
+  };
 };
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-
-  const blog = await getBlog(slug);
+}: BlogPageProps) {
+  const blog = await getBlog(params.slug);
 
   if (!blog) {
     return {
@@ -220,178 +223,207 @@ export async function generateMetadata({
   }
 
   return {
-    title: blog.seo?.title || blog.title,
+    title:
+      blog.seo?.title ||
+      blog.title,
+
     description:
       blog.seo?.metaDesc ||
       blog.blog?.subtitle ||
-      "Read this article.",
+      undefined,
+
     alternates: {
-      canonical: blog.seo?.canonical || `/blogs/${blog.slug}`,
+      canonical:
+        blog.seo?.canonical ||
+        `/blogs/${blog.slug}`,
     },
+
     openGraph: {
-      title: blog.seo?.title || blog.title,
+      title:
+        blog.seo?.title ||
+        blog.title,
+
       description:
         blog.seo?.metaDesc ||
         blog.blog?.subtitle ||
-        "Read this article.",
+        undefined,
+
       images: blog.featuredImage?.node?.sourceUrl
-        ? [blog.featuredImage.node.sourceUrl]
+        ? [
+            {
+              url: blog.featuredImage.node.sourceUrl,
+              alt:
+                blog.featuredImage.node.altText ||
+                blog.title,
+            },
+          ]
         : [],
-      type: "article",
     },
   };
 }
 
 export default async function BlogDetailPage({
   params,
-}: PageProps) {
-  const { slug } = await params;
-
-  const blog = await getBlog(slug);
+}: BlogPageProps) {
+  const blog = await getBlog(params.slug);
 
   if (!blog) {
     notFound();
   }
 
   const image = blog.featuredImage?.node;
+
   const author = blog.author?.node;
-  const category = blog.categories.nodes[0];
+
+  const relatedPosts =
+    blog.blog?.relatedPosts?.nodes || [];
+
+  const publishedDate = new Date(
+    blog.date
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
-    <main className="single-blog-page">
-      <article className="single-blog-container">
+    <main className="blog-detail-page">
+      <article className="blog-detail-container">
+        <header className="blog-detail-header">
+          {blog.categories.nodes.length > 0 && (
+            <div className="blog-detail-category">
+              {blog.categories.nodes[0].name}
+            </div>
+          )}
 
-        {/* Category */}
-        {category && (
-          <div className="single-blog-category">
-            {category.name}
-          </div>
-        )}
+          <h1 className="blog-detail-title">
+            {blog.title}
+          </h1>
 
-        {/* Title */}
-        <h1 className="single-blog-title">
-          {blog.title}
-        </h1>
+          {blog.blog?.subtitle && (
+            <p className="blog-detail-subtitle">
+              {blog.blog.subtitle}
+            </p>
+          )}
 
-        {/* Subtitle */}
-        {blog.blog?.subtitle && (
-          <p className="single-blog-subtitle">
-            {blog.blog.subtitle}
-          </p>
-        )}
-
-        {/* Author / Meta */}
-        <div className="single-blog-meta">
-
-          <div className="single-blog-author">
+          <div className="blog-detail-meta">
             {author?.avatar?.url && (
               <img
                 src={author.avatar.url}
                 alt={author.name}
-                className="single-blog-author-avatar"
+                className="blog-author-avatar"
               />
             )}
 
             <div>
-              <div className="single-blog-author-name">
-                {author?.name || "Author"}
+              <div className="blog-author-name">
+                {author?.name || "Shiva Bhusal"}
               </div>
 
-              <div className="single-blog-date">
-                {formatDate(blog.date)}
+              <div className="blog-meta-info">
+                {publishedDate}
+
+                {blog.blog?.readingTime && (
+                  <>
+                    <span>•</span>
+                    <span>
+                      {blog.blog.readingTime} min read
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
+        </header>
 
-          {blog.blog?.readingTime && (
-            <div className="single-blog-reading-time">
-              {blog.blog.readingTime} min read
-            </div>
-          )}
-        </div>
-
-        {/* Hero Image */}
         {image?.sourceUrl && (
-          <div className="single-blog-hero">
+          <div className="blog-detail-image-wrapper">
             <img
               src={image.sourceUrl}
-              alt={image.altText || blog.title}
+              alt={
+                image.altText ||
+                blog.title
+              }
+              className="blog-detail-image"
             />
           </div>
         )}
 
-        {/* Content */}
         <div
-          className="single-blog-content"
+          className="blog-detail-content"
           dangerouslySetInnerHTML={{
             __html: blog.content,
           }}
         />
 
-        {/* Tags */}
         {blog.tags.nodes.length > 0 && (
-          <div className="single-blog-tags">
+          <div className="blog-tags">
             {blog.tags.nodes.map((tag) => (
-              <span key={tag.slug}>
+              <span
+                key={tag.slug}
+                className="blog-tag"
+              >
                 #{tag.name}
               </span>
             ))}
           </div>
         )}
 
-        {/* Related Posts */}
-        {blog.blog?.relatedPosts?.nodes &&
-          blog.blog.relatedPosts.nodes.length > 0 && (
-            <section className="related-blog-section">
-              <div className="related-blog-heading">
-                <span>Keep reading</span>
-                <h2>
-                  Related <strong>Articles</strong>
-                </h2>
-              </div>
+        {relatedPosts.length > 0 && (
+          <section className="related-posts">
+            <div className="related-posts-heading">
+              <span>Keep Reading</span>
 
-              <div className="related-blog-grid">
-                {blog.blog.relatedPosts.nodes.map((related) => {
-                  const relatedImage =
-                    related.featuredImage?.node;
+              <h2>
+                Related <strong>Articles</strong>
+              </h2>
+            </div>
 
-                  return (
-                    <a
-                      key={related.databaseId}
-                      href={`/blogs/${related.slug}`}
-                      className="related-blog-card"
-                    >
-                      {relatedImage?.sourceUrl && (
-                        <img
-                          src={relatedImage.sourceUrl}
-                          alt={
-                            relatedImage.altText ||
-                            related.title
-                          }
+            <div className="related-posts-grid">
+              {relatedPosts.map((post) => {
+                const relatedImage =
+                  post.featuredImage?.node;
+
+                return (
+                  <a
+                    key={post.databaseId}
+                    href={`/blogs/${post.slug}`}
+                    className="related-post-card"
+                  >
+                    {relatedImage?.sourceUrl && (
+                      <img
+                        src={
+                          relatedImage.sourceUrl
+                        }
+                        alt={
+                          relatedImage.altText ||
+                          post.title
+                        }
+                      />
+                    )}
+
+                    <div className="related-post-body">
+                      <h3>{post.title}</h3>
+
+                      {post.excerpt && (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              post.excerpt,
+                          }}
                         />
                       )}
 
-                      <div className="related-blog-body">
-                        <h3>{related.title}</h3>
-
-                        {related.blog?.subtitle && (
-                          <p>
-                            {related.blog.subtitle}
-                          </p>
-                        )}
-
-                        {related.blog?.readingTime && (
-                          <small>
-                            {related.blog.readingTime} min read
-                          </small>
-                        )}
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </section>
-          )}
+                      <span>
+                        Read article →
+                      </span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </article>
     </main>
   );
