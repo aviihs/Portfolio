@@ -1,174 +1,164 @@
-// "use client";
-
-// import React from "react";
-// import { Container, Row, Col, Card, Badge } from "react-bootstrap";
-// import Particle from "../Particle";
-// import type { Blog } from "../../app/blogs/page";
-// import Link from "next/link";
-
-// type BlogsProps = {
-//   blogs: Blog[];
-// };
-
-// function Blogs({ blogs }: BlogsProps) {
-//   return (
-//     <main>
-//       <Container fluid className="project-section">
-//         <Particle />
-
-//         <Container>
-//           <Row
-//             style={{
-//               justifyContent: "center",
-//               paddingBottom: "30px",
-//             }}
-//           >
-//             <Col md={10} className="project-card">
-//               <h1 className="project-heading">
-//                 Shiva's <strong className="purple">Blogs</strong>
-//               </h1>
-
-//               <p
-//                 style={{
-//                   color: "white",
-//                   fontSize: "1.15rem",
-//                 }}
-//               >
-//                 Long-form notes on development, design, SEO, and building useful
-//                 digital products.
-//               </p>
-//             </Col>
-//           </Row>
-
-//           <Row>
-//             {blogs.map((blog) => (
-//               <Col md={6} lg={4} key={blog.id} className="mb-4">
-//                 <Link
-//                   href={`/blogs/${blog.slug}`}
-//                   style={{
-//                     textDecoration: "none",
-//                     color: "inherit",
-//                   }}
-//                 >
-//                   <Card className="h-100">
-//                     {blog.image && (
-//                       <Card.Img
-//                         variant="top"
-//                         src={blog.image}
-//                         alt={blog.imageAlt}
-//                       />
-//                     )}
-
-//                     <Card.Body>
-//                       <Card.Title>{blog.title}</Card.Title>
-
-//                       {blog.readingTime && (
-//                         <small>{blog.readingTime} min read</small>
-//                       )}
-
-//                       <div
-//                         dangerouslySetInnerHTML={{
-//                           __html: blog.content,
-//                         }}
-//                       />
-
-//                       {blog.techStack.length > 0 && (
-//                         <div>
-//                           {blog.techStack.map((tech) => (
-//                             <Badge key={tech} className="me-1">
-//                               {tech}
-//                             </Badge>
-//                           ))}
-//                         </div>
-//                       )}
-//                     </Card.Body>
-//                   </Card>
-//                 </Link>
-//               </Col>
-//             ))}
-//           </Row>
-//         </Container>
-//       </Container>
-//     </main>
-//   );
-// }
-
-// export default Blogs;
-
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Spinner } from "react-bootstrap";
 import Link from "next/link";
+import { Container } from "react-bootstrap";
+import "./Blog.css";
 
-type WordPressPost = {
-  id: number;
+type Blog = {
+  databaseId: number;
   slug: string;
 
-  title: {
-    rendered: string;
+  title: string;
+
+  excerpt: string;
+
+  date: string;
+
+  modified: string;
+
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string | null;
+    } | null;
+  } | null;
+
+  author: {
+    node: {
+      name: string;
+      avatar: {
+        url: string;
+      } | null;
+    } | null;
+  } | null;
+
+  categories: {
+    nodes: {
+      name: string;
+      slug: string;
+    }[];
   };
 
-  content: {
-    rendered: string;
-  };
+  blog: {
+    subtitle: string | null;
+    readingTime: number | null;
+    featuredPost: boolean;
+  } | null;
+};
 
-  _embedded?: {
-    "wp:featuredmedia"?: Array<{
-      source_url: string;
-      alt_text?: string;
-    }>;
+type BlogResponse = {
+  nodes: Blog[];
+  pageInfo: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor: string | null;
+    endCursor: string | null;
   };
 };
 
-function Blogs() {
-  const [blogs, setBlogs] = useState<WordPressPost[]>([]);
+function stripHtml(html: string) {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .trim();
+}
+
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+export default function Blogs() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [pageInfo, setPageInfo] =
+    useState<BlogResponse["pageInfo"] | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch("/api/blogs");
+  const [cursorHistory, setCursorHistory] = useState<
+    (string | null)[]
+  >([null]);
 
-        if (!response.ok) {
-          throw new Error(`Blog API failed: ${response.status}`);
-        }
+  const [currentPage, setCurrentPage] = useState(1);
 
-        const data: WordPressPost[] = await response.json();
+  async function fetchBlogs(after: string | null) {
+    try {
+      setLoading(true);
+      setError("");
 
-        setBlogs(data);
-      } catch (error) {
-        console.error("BLOG API ERROR:", error);
+      const url = new URL(
+        "/api/blogs",
+        window.location.origin
+      );
 
-        setError("Failed to load blogs.");
-      } finally {
-        setLoading(false);
+      url.searchParams.set("first", "9");
+
+      if (after) {
+        url.searchParams.set("after", after);
       }
-    };
 
-    fetchBlogs();
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch blogs");
+      }
+
+      const data: BlogResponse = await response.json();
+
+      setBlogs(data.nodes);
+      setPageInfo(data.pageInfo);
+    } catch (error) {
+      console.error(error);
+      setError("Failed to load blogs.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchBlogs(null);
   }, []);
+
+  function goNext() {
+    if (!pageInfo?.endCursor) return;
+
+    setCursorHistory((prev) => [
+      ...prev,
+      pageInfo.endCursor,
+    ]);
+
+    setCurrentPage((prev) => prev + 1);
+
+    fetchBlogs(pageInfo.endCursor);
+  }
+
+  function goPrevious() {
+    if (currentPage <= 1) return;
+
+    const previousCursor =
+      cursorHistory[currentPage - 2] ?? null;
+
+    setCursorHistory((prev) => prev.slice(0, -1));
+
+    setCurrentPage((prev) => prev - 1);
+
+    fetchBlogs(previousCursor);
+  }
 
   if (loading) {
     return (
-      <main>
-        <Container
-          style={{
-            textAlign: "center",
-            padding: "100px 0",
-          }}
-        >
-          <Spinner animation="border" variant="light" />
-
-          <p
-            style={{
-              color: "white",
-              marginTop: "20px",
-            }}
-          >
-            Loading blogs...
-          </p>
+      <main className="blogs-page">
+        <Container>
+          <div className="blogs-loading">
+            <div className="blog-loader" />
+            <p>Loading stories...</p>
+          </div>
         </Container>
       </main>
     );
@@ -176,85 +166,183 @@ function Blogs() {
 
   if (error) {
     return (
-      <main>
-        <Container
-          style={{
-            textAlign: "center",
-            padding: "100px 0",
-          }}
-        >
-          <p style={{ color: "white" }}>{error}</p>
+      <main className="blogs-page">
+        <Container>
+          <div className="blogs-error">
+            <p>{error}</p>
+          </div>
         </Container>
       </main>
     );
   }
 
   return (
-    <main>
+    <main className="blogs-page">
       <Container>
-        <Row
-          style={{
-            justifyContent: "center",
-            paddingBottom: "30px",
-          }}
-        >
-          <Col md={10} className="project-card">
-            <h1 className="project-heading">
-              Shiva's <strong className="purple">Blogs</strong>
-            </h1>
+        {/* Header */}
 
-            <p
-              style={{
-                color: "white",
-                fontSize: "1.15rem",
-              }}
-            >
-              Long-form notes on development, design, SEO, and building useful
-              digital products.
-            </p>
-          </Col>
-        </Row>
+        <section className="blogs-header">
+          <span className="blogs-eyebrow">
+            JOURNAL
+          </span>
 
-        <Row>
+          <h1>
+            Ideas, stories &{" "}
+            <span>things I learn.</span>
+          </h1>
+
+          <p>
+            Long-form notes on development, design,
+            SEO, and building useful digital products.
+          </p>
+        </section>
+
+        {/* Archive */}
+
+        <section className="blogs-grid">
           {blogs.map((blog) => {
-            const image = blog._embedded?.["wp:featuredmedia"]?.[0];
+            const image =
+              blog.featuredImage?.node;
+
+            const author =
+              blog.author?.node;
+
+            const subtitle =
+              blog.blog?.subtitle ||
+              stripHtml(blog.excerpt);
+
+            const category =
+              blog.categories.nodes[0];
 
             return (
-              <Col md={6} lg={4} key={blog.id} className="mb-4">
+              <article
+                key={blog.databaseId}
+                className={`blog-card ${
+                  blog.blog?.featuredPost
+                    ? "blog-card-featured"
+                    : ""
+                }`}
+              >
                 <Link
                   href={`/blogs/${blog.slug}`}
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                  }}
+                  className="blog-card-link"
                 >
-                  <Card className="h-100">
-                    {image?.source_url && (
-                      <Card.Img
-                        variant="top"
-                        src={image.source_url}
-                        alt={image.alt_text || blog.title.rendered}
+                  {/* Image */}
+
+                  <div className="blog-image-wrap">
+                    {image?.sourceUrl ? (
+                      <img
+                        src={image.sourceUrl}
+                        alt={
+                          image.altText ||
+                          blog.title
+                        }
+                        className="blog-image"
                       />
+                    ) : (
+                      <div className="blog-image-placeholder">
+                        No image
+                      </div>
                     )}
 
-                    <Card.Body>
-                      <Card.Title>{blog.title.rendered}</Card.Title>
+                    {category && (
+                      <span className="blog-category">
+                        {category.name}
+                      </span>
+                    )}
+                  </div>
 
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: blog.content.rendered,
-                        }}
-                      />
-                    </Card.Body>
-                  </Card>
+                  {/* Meta */}
+
+                  <div className="blog-card-body">
+                    <div className="blog-meta">
+                      <div className="blog-author">
+                        {author?.avatar?.url ? (
+                          <img
+                            src={author.avatar.url}
+                            alt={author.name}
+                          />
+                        ) : (
+                          <div className="author-placeholder">
+                            {author?.name
+                              ?.charAt(0)
+                              .toUpperCase()}
+                          </div>
+                        )}
+
+                        <span>
+                          {author?.name ||
+                            "Shiva Bhusal"}
+                        </span>
+                      </div>
+
+                      <span className="blog-date">
+                        {formatDate(blog.date)}
+                      </span>
+
+                      {blog.blog?.readingTime && (
+                        <>
+                          <span className="meta-dot">
+                            ·
+                          </span>
+
+                          <span className="blog-date">
+                            {blog.blog.readingTime} min
+                            read
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Title */}
+
+                    <h2>{blog.title}</h2>
+
+                    {/* Description */}
+
+                    <p className="blog-description">
+                      {subtitle}
+                    </p>
+
+                    <div className="read-more">
+                      Read article
+                      <span>→</span>
+                    </div>
+                  </div>
                 </Link>
-              </Col>
+              </article>
             );
           })}
-        </Row>
+        </section>
+
+        {/* Pagination */}
+
+        {(pageInfo?.hasPreviousPage ||
+          pageInfo?.hasNextPage) && (
+          <nav
+            className="blog-pagination"
+            aria-label="Blog pagination"
+          >
+            <button
+              onClick={goPrevious}
+              disabled={currentPage === 1}
+            >
+              ← Previous
+            </button>
+
+            <span>
+              Page {currentPage}
+            </span>
+
+            <button
+              onClick={goNext}
+              disabled={!pageInfo?.hasNextPage}
+            >
+              Next →
+            </button>
+          </nav>
+        )}
       </Container>
     </main>
   );
 }
-
-export default Blogs;
