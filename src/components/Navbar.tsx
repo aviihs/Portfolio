@@ -14,6 +14,34 @@ import {
 
 import { CgFileDocument } from "react-icons/cg";
 
+const navItems = [
+  {
+    path: "/",
+    label: "Home",
+    icon: AiOutlineHome,
+  },
+  {
+    path: "/about",
+    label: "About",
+    icon: AiOutlineUser,
+  },
+  {
+    path: "/project",
+    label: "Projects",
+    icon: AiOutlineFundProjectionScreen,
+  },
+  {
+    path: "/blogs",
+    label: "Blogs",
+    icon: CgFileDocument,
+  },
+  {
+    path: "/resume",
+    label: "Resume",
+    icon: CgFileDocument,
+  },
+];
+
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
   const [navColour, updateNavbar] = useState(false);
@@ -29,36 +57,6 @@ function NavBar() {
 
     return () => window.removeEventListener("scroll", scrollHandler);
   }, []);
-
-  const navItems = [
-    {
-      path: "/",
-      label: "Home",
-      icon: <AiOutlineHome style={{ marginBottom: "2px" }} />,
-    },
-    {
-      path: "/about",
-      label: "About",
-      icon: <AiOutlineUser style={{ marginBottom: "2px" }} />,
-    },
-    {
-      path: "/project",
-      label: "Projects",
-      icon: (
-        <AiOutlineFundProjectionScreen style={{ marginBottom: "2px" }} />
-      ),
-    },
-    {
-      path: "/blogs",
-      label: "Blogs",
-      icon: <CgFileDocument style={{ marginBottom: "2px" }} />,
-    },
-    {
-      path: "/resume",
-      label: "Resume",
-      icon: <CgFileDocument style={{ marginBottom: "2px" }} />,
-    },
-  ];
 
   return (
     <header
@@ -112,6 +110,7 @@ function NavBar() {
           <div className="flex flex-col gap-2 md:flex-row md:items-center">
             {navItems.map((item) => {
               const active = pathname === item.path;
+              const Icon = item.icon;
 
               return (
                 <Link
@@ -124,7 +123,7 @@ function NavBar() {
                       : "text-white/75 hover:bg-white/[0.07] hover:text-white"
                   }`}
                 >
-                  {item.icon}
+                  <Icon className="translate-y-px" />
                   {item.label}
                 </Link>
               );

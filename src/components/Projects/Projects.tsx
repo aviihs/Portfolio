@@ -10,13 +10,93 @@ import mobile from "../../Assets/Projects/mobile.png";
 import { FaMusic } from "react-icons/fa";
 import { BsArrowUpRight, BsStars } from "react-icons/bs";
 
-function Projects() {
-  const projectStats = [
-    ["04+", "Shipped works"],
-    ["Full-stack", "Web + mobile"],
-    ["Creative", "Music + product"],
-  ];
+const projectStats = [
+  ["04+", "Shipped works"],
+  ["Full-stack", "Web + mobile"],
+  ["Creative", "Music + product"],
+];
 
+const featuredProject = {
+  title: "Bike Management System",
+  image: bike,
+  imageAlt: "Bike Management System preview",
+  description:
+    "A practical Core PHP and MySQL admin system with CRUD workflows, database operations, authentication, and production-style data management.",
+  tags: ["Core PHP", "MySQL", "Admin panel", "CRUD"],
+  demoLink: "https://bikemanagement.free.nf/",
+  ghLink: "https://github.com/aviihs/php/tree/main/bikeManagementSystem",
+};
+
+const projectItems = [
+  {
+    accent: "mint" as const,
+    imgPath: bike,
+    title: "Bike Management System",
+    description: (
+      <>
+        A web-based Bike Management System developed using Core PHP and MySQL.
+        The system includes a secure admin panel with full CRUD functionality,
+        allowing efficient management of bike records and data handling. This
+        project demonstrates my practical knowledge of backend logic, database
+        operations, and admin workflow design.
+        <br />
+        <br />
+        <strong>Admin Panel Access:</strong>
+        <br />
+        Username: bhusalshiva010@gmail.com
+        <br />
+        Password: bhusalshiva010@gmail.com
+      </>
+    ),
+    ghLink: "https://github.com/aviihs/php/tree/main/bikeManagementSystem",
+    demoLink: "https://bikemanagement.free.nf/",
+  },
+  {
+    accent: "violet" as const,
+    imgPath: mobile,
+    title: "Basic Restro App",
+    description: (
+      <>
+        A simple restaurant-themed mobile application built while learning React
+        Native. This project focuses on applying core React Native fundamentals,
+        including components, layout structuring, navigation, and basic UI
+        design. It represents my hands-on practice in building native interfaces
+        and understanding mobile app development concepts.
+        <br />
+        <br />
+        <strong>
+          Note: To Download this app, You can click demo link and then you will
+          be redirect to download apk file of the app. Suitable for only android
+          devices.
+        </strong>
+      </>
+    ),
+    ghLink:
+      "https://github.com/aviihs/internNative/tree/main/basic_homeTab",
+    demoLink:
+      "https://github.com/aviihs/react-native/tree/main/basicRestroApp",
+  },
+  {
+    accent: "amber" as const,
+    imgPath: leaf,
+    title: "Websocket",
+    description:
+      "A real-time communication system built using WebSockets and Node.js. This project demonstrates bidirectional communication between client and server, enabling live updates and interactive user experiences in web applications.",
+    ghLink: "#",
+    demoLink: "#",
+  },
+];
+
+const musicProject = {
+  accent: "amber" as const,
+  videoLink: "https://www.youtube.com/embed/KwApRqUZDGc",
+  title: "Nyano Jhari",
+  description:
+    "An original Nepali song inspired by personal emotions and creativity. This project reflects my strong interest in music, where I explore mood, melody, and artistic storytelling beyond programming.",
+  demoLink: "https://www.youtube.com/watch?v=KwApRqUZDGc",
+};
+
+function Projects() {
   return (
     <main className="min-h-screen overflow-hidden px-4 py-28 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_12%_10%,rgba(88,230,198,0.16),transparent_28%),radial-gradient(circle_at_92%_6%,rgba(247,200,115,0.12),transparent_24%),radial-gradient(circle_at_76%_36%,rgba(199,112,240,0.16),transparent_28%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
@@ -72,8 +152,8 @@ function Projects() {
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative overflow-hidden rounded-[1.2rem]">
               <img
-                src={bike.src}
-                alt="Bike Management System preview"
+                src={featuredProject.image.src}
+                alt={featuredProject.imageAlt}
                 className="h-full min-h-72 w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
@@ -83,15 +163,13 @@ function Projects() {
                 Featured case
               </span>
               <h2 className="text-3xl font-black sm:text-5xl">
-                Bike Management System
+                {featuredProject.title}
               </h2>
               <p className="mt-4 text-sm leading-7 text-white/65 sm:text-base">
-                A practical Core PHP and MySQL admin system with CRUD workflows,
-                database operations, authentication, and production-style data
-                management.
+                {featuredProject.description}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                {["Core PHP", "MySQL", "Admin panel", "CRUD"].map((tag) => (
+                {featuredProject.tags.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-bold text-white/70"
@@ -102,7 +180,7 @@ function Projects() {
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href="https://bikemanagement.free.nf/"
+                  href={featuredProject.demoLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-mintGlass px-5 py-3 font-black text-ink no-underline transition hover:-translate-y-1 hover:bg-white"
@@ -110,7 +188,7 @@ function Projects() {
                   View live <BsArrowUpRight />
                 </a>
                 <a
-                  href="https://github.com/aviihs/php/tree/main/bikeManagementSystem"
+                  href={featuredProject.ghLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-5 py-3 font-bold text-white no-underline transition hover:border-mintGlass/45 hover:text-mintGlass"
@@ -123,67 +201,13 @@ function Projects() {
         </motion.section>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {projectItems.map((project) => (
             <ProjectCard
-              accent="mint"
-              imgPath={bike}
+              key={project.title}
               isBlog={false}
-              title="Bike Management System"
-              description={
-                <>
-                  A web-based Bike Management System developed using Core PHP
-                  and MySQL. The system includes a secure admin panel with full
-                  CRUD functionality, allowing efficient management of bike
-                  records and data handling. This project demonstrates my
-                  practical knowledge of backend logic, database operations, and
-                  admin workflow design.
-                  <br />
-                  <br />
-                  <strong>Admin Panel Access:</strong>
-                  <br />
-                  Username: bhusalshiva010@gmail.com
-                  <br />
-                  Password: bhusalshiva010@gmail.com
-                </>
-              }
-              ghLink="https://github.com/aviihs/php/tree/main/bikeManagementSystem"
-              demoLink="https://bikemanagement.free.nf/"
+              {...project}
             />
-
-            <ProjectCard
-              accent="violet"
-              imgPath={mobile}
-              isBlog={false}
-              title="Basic Restro App"
-              description={
-                <>
-                  A simple restaurant-themed mobile application built while
-                  learning React Native. This project focuses on applying core
-                  React Native fundamentals, including components, layout
-                  structuring, navigation, and basic UI design. It represents my
-                  hands-on practice in building native interfaces and
-                  understanding mobile app development concepts.
-                  <br />
-                  <br />
-                  <strong>
-                    Note: To Download this app, You can click demo link and then
-                    you will be redirect to download apk file of the app.
-                    Suitable for only android devices.
-                  </strong>
-                </>
-              }
-              ghLink="https://github.com/aviihs/internNative/tree/main/basic_homeTab"
-              demoLink="https://github.com/aviihs/react-native/tree/main/basicRestroApp"
-            />
-
-            <ProjectCard
-              accent="amber"
-              imgPath={leaf}
-              isBlog={false}
-              title="Websocket"
-              description="A real-time communication system built using WebSockets and Node.js. This project demonstrates bidirectional communication between client and server, enabling live updates and interactive user experiences in web applications."
-              ghLink="#"
-              demoLink="#"
-            />
+          ))}
         </div>
 
       <section className="pt-24">
@@ -208,16 +232,7 @@ function Projects() {
           </motion.div>
 
           <div className="mx-auto mt-10 max-w-lg">
-              <ProjectCard
-                accent="amber"
-                videoLink="https://www.youtube.com/embed/KwApRqUZDGc"
-                isBlog={false}
-                title="Nyano Jhari"
-                description="An original Nepali song inspired by personal emotions and creativity.
-    This project reflects my strong interest in music, where I explore mood,
-    melody, and artistic storytelling beyond programming."
-                demoLink="https://www.youtube.com/watch?v=KwApRqUZDGc"
-              />
+            <ProjectCard isBlog={false} {...musicProject} />
           </div>
       </section>
       </div>

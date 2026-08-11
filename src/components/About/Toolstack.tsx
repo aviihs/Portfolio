@@ -6,6 +6,14 @@ import vsCode from "../../Assets/TechIcons/vscode.svg";
 import trello from "../../Assets/TechIcons/trello.png";
 import slack from "../../Assets/TechIcons/slack.png";
 
+const toolItems = [
+  { label: "Mac Os", image: macOs.src, alt: "macOs" },
+  { label: "Brave Browser", image: brave.src, alt: "Brave" },
+  { label: "Vs Code", image: vsCode.src, alt: "vsCode" },
+  { label: "Trello", image: trello.src, alt: "trello" },
+  { label: "Slack", image: slack.src, alt: "slack" },
+];
+
 function Toolstack() {
   const iconClass =
     "group flex min-h-32 flex-col items-center justify-center gap-3 rounded-[1.15rem] border border-white/10 bg-white/[0.055] p-4 text-center shadow-2xl shadow-black/10 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-violetMist/45 hover:shadow-glow";
@@ -14,27 +22,12 @@ function Toolstack() {
 
   return (
     <div className="grid grid-cols-2 gap-4 pb-12 sm:grid-cols-3 lg:grid-cols-5">
-      <div className={iconClass}>
-        <img src={macOs.src} alt="macOs" className={imageClass} />
-        <div className={textClass}>Mac Os</div>
-      </div>
-      <div className={iconClass}>
-        <img src={brave.src} alt="Brave" className={imageClass} />
-        <div className={textClass}>Brave Browser</div>
-      </div>
-      <div className={iconClass}>
-        <img src={vsCode.src} alt="vsCode" className={imageClass} />
-        <div className={textClass}>Vs Code</div>
-      </div>
-
-      <div className={iconClass}>
-        <img src={trello.src} alt="trello" className={imageClass} />
-        <div className={textClass}>Trello</div>
-      </div>
-      <div className={iconClass}>
-        <img src={slack.src} alt="slack" className={imageClass} />
-        <div className={textClass}>Slack</div>
-      </div>
+      {toolItems.map((item) => (
+        <div className={iconClass} key={item.label}>
+          <img src={item.image} alt={item.alt} className={imageClass} />
+          <div className={textClass}>{item.label}</div>
+        </div>
+      ))}
     </div>
   );
 }

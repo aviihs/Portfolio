@@ -13,6 +13,29 @@ import {
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 
+const socialLinks = [
+  {
+    href: "https://github.com/aviihs",
+    label: "GitHub",
+    icon: AiFillGithub,
+  },
+  {
+    href: "https://www.youtube.com/@avihs010",
+    label: "YouTube",
+    icon: AiOutlineYoutube,
+  },
+  {
+    href: "https://www.linkedin.com/in/shiva-bhusal-9409152a6/",
+    label: "LinkedIn",
+    icon: FaLinkedinIn,
+  },
+  {
+    href: "https://www.instagram.com/av_ihs_",
+    label: "Instagram",
+    icon: AiFillInstagram,
+  },
+];
+
 function Home() {
   return (
     <section className="overflow-hidden">
@@ -91,46 +114,19 @@ function Home() {
               Feel free to <span className="text-mintGlass">connect </span>with me
             </p>
             <ul className="mt-8 flex list-none flex-wrap justify-center gap-4 p-0">
-              <li>
-                <a
-                  href="https://github.com/aviihs"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xl text-white transition hover:-translate-y-1 hover:border-mintGlass/50 hover:text-mintGlass"
-                >
-                  <AiFillGithub />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.youtube.com/@avihs010"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xl text-white transition hover:-translate-y-1 hover:border-mintGlass/50 hover:text-mintGlass"
-                >
-                  <AiOutlineYoutube />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/in/shiva-bhusal-9409152a6/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xl text-white transition hover:-translate-y-1 hover:border-mintGlass/50 hover:text-mintGlass"
-                >
-                  <FaLinkedinIn />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.instagram.com/av_ihs_"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xl text-white transition hover:-translate-y-1 hover:border-mintGlass/50 hover:text-mintGlass"
-                >
-                  <AiFillInstagram />
-                </a>
-              </li>
+              {socialLinks.map(({ href, icon: Icon, label }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    className="grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xl text-white transition hover:-translate-y-1 hover:border-mintGlass/50 hover:text-mintGlass"
+                  >
+                    <Icon />
+                  </a>
+                </li>
+              ))}
             </ul>
         </motion.div>
       </div>
