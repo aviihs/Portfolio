@@ -4,6 +4,7 @@ import {
   MotionArticle,
   MotionBlock,
 } from "../../../components/Blogs/BlogMotion";
+import Particle from "../../../components/Particle";
 
 const WORDPRESS_GRAPHQL_URL =
   process.env.WORDPRESS_GRAPHQL_URL ||
@@ -295,6 +296,7 @@ export default async function BlogDetailPage({
   return (
     <main className="min-h-screen overflow-hidden px-4 py-24 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_18%_8%,rgba(88,230,198,0.13),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(199,112,240,0.18),transparent_30%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
+      <Particle />
 
       <MotionArticle className="mx-auto max-w-5xl">
         <Link

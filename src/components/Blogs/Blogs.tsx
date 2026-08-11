@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Particle from "../Particle";
 
 type Blog = {
   databaseId: number;
@@ -153,6 +154,7 @@ export default function Blogs() {
   if (loading) {
     return (
       <main className="min-h-screen px-4 py-28 text-white">
+        <Particle />
         <div className="mx-auto grid min-h-[420px] max-w-6xl place-items-center">
           <div className="text-center">
             <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-2 border-white/10 border-t-violetMist" />
@@ -166,6 +168,7 @@ export default function Blogs() {
   if (error) {
     return (
       <main className="min-h-screen px-4 py-28 text-white">
+        <Particle />
         <div className="mx-auto grid min-h-[420px] max-w-6xl place-items-center">
           <div className="rounded-2xl border border-red-300/15 bg-red-400/10 px-6 py-5 text-sm text-red-100">
             {error}
@@ -178,6 +181,7 @@ export default function Blogs() {
   return (
     <main className="min-h-screen overflow-hidden px-4 py-24 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(88,230,198,0.14),transparent_28%),radial-gradient(circle_at_80%_15%,rgba(199,112,240,0.18),transparent_30%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
+      <Particle />
 
       <div className="mx-auto max-w-7xl">
         <motion.section
