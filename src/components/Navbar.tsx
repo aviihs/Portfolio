@@ -75,9 +75,6 @@ function NavBar() {
           onClick={() => updateExpanded(false)}
         >
           <img src={logo.src} className="h-9 w-auto" alt="Shiva Bhusal" />
-          <span className="hidden text-sm font-black tracking-[0.18em] sm:inline">
-            SHIVA
-          </span>
         </Link>
 
         <button
