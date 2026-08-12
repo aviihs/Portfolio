@@ -2,6 +2,11 @@
 
 import React from "react";
 import { ImPointRight } from "react-icons/im";
+import {
+  ABOUT_ACTIVITIES,
+  ABOUT_COPY,
+} from "../../constants/about";
+import { SITE_AUTHOR } from "../../constants/site";
 
 function AboutCard() {
   return (
@@ -29,21 +34,20 @@ function AboutCard() {
           </p>
 
           <ul className="mt-5 space-y-3 p-0">
-            <li className="flex items-center gap-3 text-white/75">
-              <ImPointRight /> Creating and sharing my music 🎵
-            </li>
-            <li className="flex items-center gap-3 text-white/75">
-              <ImPointRight /> Photo & video editing 🎬
-            </li>
-            <li className="flex items-center gap-3 text-white/75">
-              <ImPointRight /> Reading, chess, and badminton ♟️🏸
-            </li>
+            {ABOUT_ACTIVITIES.map((activity) => (
+              <li
+                key={activity}
+                className="flex items-center gap-3 text-white/75"
+              >
+                <ImPointRight /> {activity}
+              </li>
+            ))}
           </ul>
 
           <p className="mt-6 text-violet-200">
-            "Building apps & music that inspire!"
+            {ABOUT_COPY.quote}
           </p>
-          <footer className="text-sm text-white/45">Shiva Bhusal</footer>
+          <footer className="text-sm text-white/45">{SITE_AUTHOR}</footer>
       </blockquote>
     </div>
   );

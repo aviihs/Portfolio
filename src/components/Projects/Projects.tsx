@@ -4,97 +4,16 @@ import React from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
-import leaf from "../../Assets/Projects/leaf.png";
-import bike from "../../Assets/Projects/bike.png";
-import mobile from "../../Assets/Projects/mobile.png";
 import { FaMusic } from "react-icons/fa";
 import { BsArrowUpRight, BsStars } from "react-icons/bs";
-
-const projectStats = [
-  ["04+", "Shipped works"],
-  ["Full-stack", "Web + mobile"],
-  ["Creative", "Music + product"],
-];
-
-const featuredProject = {
-  title: "Bike Management System",
-  image: bike,
-  imageAlt: "Bike Management System preview",
-  description:
-    "A practical Core PHP and MySQL admin system with CRUD workflows, database operations, authentication, and production-style data management.",
-  tags: ["Core PHP", "MySQL", "Admin panel", "CRUD"],
-  demoLink: "https://bikemanagement.free.nf/",
-  ghLink: "https://github.com/aviihs/php/tree/main/bikeManagementSystem",
-};
-
-const projectItems = [
-  {
-    accent: "mint" as const,
-    imgPath: bike,
-    title: "Bike Management System",
-    description: (
-      <>
-        A web-based Bike Management System developed using Core PHP and MySQL.
-        The system includes a secure admin panel with full CRUD functionality,
-        allowing efficient management of bike records and data handling. This
-        project demonstrates my practical knowledge of backend logic, database
-        operations, and admin workflow design.
-        <br />
-        <br />
-        <strong>Admin Panel Access:</strong>
-        <br />
-        Username: bhusalshiva010@gmail.com
-        <br />
-        Password: bhusalshiva010@gmail.com
-      </>
-    ),
-    ghLink: "https://github.com/aviihs/php/tree/main/bikeManagementSystem",
-    demoLink: "https://bikemanagement.free.nf/",
-  },
-  {
-    accent: "violet" as const,
-    imgPath: mobile,
-    title: "Basic Restro App",
-    description: (
-      <>
-        A simple restaurant-themed mobile application built while learning React
-        Native. This project focuses on applying core React Native fundamentals,
-        including components, layout structuring, navigation, and basic UI
-        design. It represents my hands-on practice in building native interfaces
-        and understanding mobile app development concepts.
-        <br />
-        <br />
-        <strong>
-          Note: To Download this app, You can click demo link and then you will
-          be redirect to download apk file of the app. Suitable for only android
-          devices.
-        </strong>
-      </>
-    ),
-    ghLink:
-      "https://github.com/aviihs/internNative/tree/main/basic_homeTab",
-    demoLink:
-      "https://github.com/aviihs/react-native/tree/main/basicRestroApp",
-  },
-  {
-    accent: "amber" as const,
-    imgPath: leaf,
-    title: "Websocket",
-    description:
-      "A real-time communication system built using WebSockets and Node.js. This project demonstrates bidirectional communication between client and server, enabling live updates and interactive user experiences in web applications.",
-    ghLink: "#",
-    demoLink: "#",
-  },
-];
-
-const musicProject = {
-  accent: "amber" as const,
-  videoLink: "https://www.youtube.com/embed/KwApRqUZDGc",
-  title: "Nyano Jhari",
-  description:
-    "An original Nepali song inspired by personal emotions and creativity. This project reflects my strong interest in music, where I explore mood, melody, and artistic storytelling beyond programming.",
-  demoLink: "https://www.youtube.com/watch?v=KwApRqUZDGc",
-};
+import { fadeUp, viewportFadeUp } from "../../constants/animations";
+import {
+  FEATURED_PROJECT,
+  MUSIC_PROJECT,
+  PROJECT_COPY,
+  PROJECT_ITEMS,
+  PROJECT_STATS,
+} from "../../constants/projects";
 
 function Projects() {
   return (
@@ -103,31 +22,27 @@ function Projects() {
       <Particle />
       <div className="mx-auto max-w-7xl">
         <motion.section
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
+          {...fadeUp}
           className="mb-14 grid items-end gap-8 lg:grid-cols-[1.1fr_0.9fr]"
         >
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-amberSoft backdrop-blur">
               <BsStars />
-              Selected work
+              {PROJECT_COPY.eyebrow}
             </span>
             <h1 className="mt-6 max-w-4xl text-5xl font-black leading-tight sm:text-7xl">
-              Digital products with a{" "}
+              {PROJECT_COPY.titleLead}{" "}
               <strong className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
-                polished pulse.
+                {PROJECT_COPY.titleAccent}
               </strong>
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
-              A focused collection of web, mobile, backend, and creative work,
-              redesigned with cleaner hierarchy, richer cards, and smoother
-              motion.
+              {PROJECT_COPY.description}
             </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            {projectStats.map(([value, label]) => (
+            {PROJECT_STATS.map(([value, label]) => (
               <motion.div
                 key={label}
                 whileHover={{ x: 6 }}
@@ -143,33 +58,30 @@ function Projects() {
         </motion.section>
 
         <motion.section
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
+          {...viewportFadeUp}
           className="mb-6 rounded-[1.6rem] border border-white/10 bg-white/[0.055] p-5 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-6"
         >
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative overflow-hidden rounded-[1.2rem]">
               <img
-                src={featuredProject.image.src}
-                alt={featuredProject.imageAlt}
+                src={FEATURED_PROJECT.image.src}
+                alt={FEATURED_PROJECT.imageAlt}
                 className="h-full min-h-72 w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
             </div>
             <div className="flex flex-col justify-center">
               <span className="mb-4 w-fit rounded-full bg-mintGlass px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-ink">
-                Featured case
+                {PROJECT_COPY.featuredLabel}
               </span>
               <h2 className="text-3xl font-black sm:text-5xl">
-                {featuredProject.title}
+                {FEATURED_PROJECT.title}
               </h2>
               <p className="mt-4 text-sm leading-7 text-white/65 sm:text-base">
-                {featuredProject.description}
+                {FEATURED_PROJECT.description}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                {featuredProject.tags.map((tag) => (
+                {FEATURED_PROJECT.tags.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-bold text-white/70"
@@ -180,20 +92,20 @@ function Projects() {
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href={featuredProject.demoLink}
+                  href={FEATURED_PROJECT.demoLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-mintGlass px-5 py-3 font-black text-ink no-underline transition hover:-translate-y-1 hover:bg-white"
                 >
-                  View live <BsArrowUpRight />
+                  {PROJECT_COPY.viewLive} <BsArrowUpRight />
                 </a>
                 <a
-                  href={featuredProject.ghLink}
+                  href={FEATURED_PROJECT.ghLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-5 py-3 font-bold text-white no-underline transition hover:border-mintGlass/45 hover:text-mintGlass"
                 >
-                  Source code <BsArrowUpRight />
+                  {PROJECT_COPY.sourceCode} <BsArrowUpRight />
                 </a>
               </div>
             </div>
@@ -201,7 +113,7 @@ function Projects() {
         </motion.section>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {projectItems.map((project) => (
+          {PROJECT_ITEMS.map((project) => (
             <ProjectCard
               key={project.title}
               isBlog={false}
@@ -212,27 +124,23 @@ function Projects() {
 
       <section className="pt-24">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
+            {...viewportFadeUp}
             className="text-center"
           >
             <h2 className="text-4xl font-black sm:text-6xl">
-              Interest in{" "}
+              {PROJECT_COPY.musicTitleLead}{" "}
               <strong className="inline-flex items-center gap-3 text-amberSoft">
-                Music <FaMusic className="text-3xl" />
+                {PROJECT_COPY.musicTitleAccent} <FaMusic className="text-3xl" />
               </strong>
             </h2>
 
             <p className="mx-auto mt-4 max-w-3xl text-white/65">
-              Alongside development, I have a deep passion for music and creative
-              expression. Here is one of my original creations.
+              {PROJECT_COPY.musicDescription}
             </p>
           </motion.div>
 
           <div className="mx-auto mt-10 max-w-lg">
-            <ProjectCard isBlog={false} {...musicProject} />
+            <ProjectCard isBlog={false} {...MUSIC_PROJECT} />
           </div>
       </section>
       </div>

@@ -4,6 +4,10 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
 import { BsGithub } from "react-icons/bs";
+import {
+  PROJECT_CARD_ACCENT_STYLES,
+  PROJECT_CARD_COPY,
+} from "../../constants/project-card";
 
 type ProjectCardProps = {
   accent?: "mint" | "violet" | "amber";
@@ -27,11 +31,6 @@ function ProjectCards({
   videoLink,
 }: ProjectCardProps) {
   const imageSrc = typeof imgPath === "string" ? imgPath : imgPath?.src;
-  const accentStyles = {
-    mint: "from-mintGlass/35 via-white/5 to-transparent",
-    violet: "from-violetMist/35 via-white/5 to-transparent",
-    amber: "from-amberSoft/30 via-white/5 to-transparent",
-  };
 
   return (
     <motion.article
@@ -43,7 +42,7 @@ function ProjectCards({
       className="group relative flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.055] text-white shadow-2xl shadow-black/20 backdrop-blur-xl transition-colors duration-300 hover:border-white/20"
     >
       <div
-        className={`pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${accentStyles[accent]} opacity-80`}
+        className={`pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${PROJECT_CARD_ACCENT_STYLES[accent]} opacity-80`}
       />
       {videoLink ? (
         <div className="relative aspect-video bg-black">
@@ -86,7 +85,7 @@ function ProjectCards({
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white no-underline transition hover:border-mintGlass/45 hover:text-mintGlass"
           >
             <BsGithub />
-            {isBlog ? "Blog" : "GitHub"}
+            {isBlog ? PROJECT_CARD_COPY.blog : PROJECT_CARD_COPY.github}
           </a>
           )}
 
@@ -97,7 +96,7 @@ function ProjectCards({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-mintGlass px-4 py-2 text-sm font-black text-ink no-underline transition hover:bg-white"
           >
-            <CgWebsite /> Demo
+            <CgWebsite /> {PROJECT_CARD_COPY.demo}
           </a>
           )}
         </div>

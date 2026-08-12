@@ -8,39 +8,19 @@ import Techstack from "./Techstack";
 import Aboutcard from "./AboutCard";
 import laptopImg from "../../Assets/about.png";
 import Toolstack from "./Toolstack";
+import { BsArrowUpRight } from "react-icons/bs";
 import {
-  BsArrowUpRight,
-  BsCodeSlash,
-  BsLayers,
-  BsLightningCharge,
-} from "react-icons/bs";
+  ABOUT_COPY,
+  ABOUT_HIGHLIGHTS,
+  ABOUT_METRICS,
+} from "../../constants/about";
+import {
+  fadeUp,
+  scaleIn,
+  viewportFadeUp,
+} from "../../constants/animations";
 
 function About() {
-  const highlights = [
-    {
-      icon: <BsCodeSlash />,
-      title: "Engineering",
-      text: "Full-stack web, mobile interfaces, APIs, and practical admin systems.",
-    },
-    {
-      icon: <BsLayers />,
-      title: "Product Thinking",
-      text: "Clean flows, useful UX, performance-minded builds, and maintainable code.",
-    },
-    {
-      icon: <BsLightningCharge />,
-      title: "Creative Energy",
-      text: "Design, Figma, music, editing, and a habit of turning ideas into finished work.",
-    },
-  ];
-
-  const metrics = [
-    ["MERN", "Primary stack"],
-    ["React Native", "Mobile focus"],
-    ["WordPress", "CMS experience"],
-    ["Figma", "Design workflow"],
-  ];
-
   return (
     <>
       <Particle />
@@ -49,50 +29,44 @@ function About() {
         <div className="mx-auto max-w-7xl">
           <section className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55 }}
+              {...fadeUp}
             >
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-mintGlass backdrop-blur">
-                About Shiva
+                {ABOUT_COPY.eyebrow}
               </span>
               <h1 className="mt-6 max-w-4xl text-5xl font-black leading-tight sm:text-7xl">
-                I build useful software with{" "}
+                {ABOUT_COPY.titleLead}{" "}
                 <strong className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
-                  creative precision.
+                  {ABOUT_COPY.titleAccent}
                 </strong>
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
-                A software engineer from Kathmandu blending full-stack
-                development, mobile interfaces, product design, and a bit of
-                music-driven imagination.
+                {ABOUT_COPY.intro}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
                   href="/project"
                   className="inline-flex items-center gap-2 rounded-full bg-mintGlass px-5 py-3 font-black text-ink no-underline transition hover:-translate-y-1 hover:bg-white"
                 >
-                  View work <BsArrowUpRight />
+                  {ABOUT_COPY.primaryCta} <BsArrowUpRight />
                 </a>
                 <a
                   href="/resume"
                   className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-5 py-3 font-bold text-white no-underline transition hover:border-mintGlass/45 hover:text-mintGlass"
                 >
-                  Resume <BsArrowUpRight />
+                  {ABOUT_COPY.secondaryCta} <BsArrowUpRight />
                 </a>
               </div>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.65, delay: 0.08 }}
+              {...scaleIn}
               className="relative mx-auto w-full max-w-lg"
             >
               <div className="absolute inset-6 rounded-[2rem] bg-mintGlass/10 blur-3xl" />
               <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl">
                 <img src={laptopImg.src} alt="about" className="mx-auto w-full max-w-sm" />
                 <div className="mt-6 grid grid-cols-2 gap-3">
-                  {metrics.map(([value, label]) => (
+                  {ABOUT_METRICS.map(([value, label]) => (
                     <motion.div
                       key={label}
                       whileHover={{ y: -4 }}
@@ -110,7 +84,10 @@ function About() {
           </section>
 
           <section className="mt-16 grid gap-5 md:grid-cols-3">
-            {highlights.map((item, index) => (
+            {ABOUT_HIGHLIGHTS.map((item, index) => {
+              const Icon = item.icon;
+
+              return (
               <motion.article
                 key={item.title}
                 initial={{ opacity: 0, y: 18 }}
@@ -121,50 +98,52 @@ function About() {
                 className="rounded-[1.35rem] border border-white/10 bg-white/[0.055] p-5 shadow-2xl shadow-black/20 backdrop-blur-xl"
               >
                 <div className="grid h-12 w-12 place-items-center rounded-2xl bg-mintGlass text-xl text-ink">
-                  {item.icon}
+                  <Icon />
                 </div>
                 <h3 className="mt-5 text-xl font-black">{item.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-white/60">
                   {item.text}
                 </p>
               </motion.article>
-            ))}
+              );
+            })}
           </section>
 
           <section className="mt-16 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
             <motion.div
-              initial={{ opacity: 0, x: -18 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55 }}
+              {...viewportFadeUp}
             >
               <h2 className="mb-5 text-3xl font-black sm:text-5xl">
-                The short <strong className="text-mintGlass">story</strong>
+                {ABOUT_COPY.storyTitleLead}{" "}
+                <strong className="text-mintGlass">
+                  {ABOUT_COPY.storyTitleAccent}
+                </strong>
               </h2>
               <p className="text-sm leading-7 text-white/60 sm:text-base">
-                I care about building digital products that feel clear, fast,
-                and alive. My workflow usually moves from idea and structure to
-                interface, backend, iteration, and shipping.
+                {ABOUT_COPY.story}
               </p>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: 18 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55 }}
+              {...viewportFadeUp}
             >
               <Aboutcard />
             </motion.div>
           </section>
 
           <h2 className="mb-8 mt-20 text-center text-3xl font-black sm:text-5xl">
-            Professional <strong className="text-mintGlass">Skillset </strong>
+            {ABOUT_COPY.skillTitleLead}{" "}
+            <strong className="text-mintGlass">
+              {ABOUT_COPY.skillTitleAccent}{" "}
+            </strong>
           </h2>
  
           <Techstack />
 
           <h2 className="mb-8 mt-8 text-center text-3xl font-black sm:text-5xl">
-            <strong className="text-mintGlass">Tools</strong> I use
+            <strong className="text-mintGlass">
+              {ABOUT_COPY.toolsTitleLead}
+            </strong>{" "}
+            {ABOUT_COPY.toolsTitleRest}
           </h2>
           <Toolstack />
 

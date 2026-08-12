@@ -1,34 +1,6 @@
 "use client";
 
-import {
-  AiFillGithub,
-  AiFillInstagram,
-  AiOutlineYoutube,
-} from "react-icons/ai";
-import { FaLinkedinIn } from "react-icons/fa";
-
-const footerSocialLinks = [
-  {
-    href: "https://github.com/aviihs",
-    label: "GitHub",
-    icon: AiFillGithub,
-  },
-  {
-    href: "https://www.youtube.com/@avihs010",
-    label: "YouTube",
-    icon: AiOutlineYoutube,
-  },
-  {
-    href: "https://www.linkedin.com/in/shiva-bhusal-9409152a6/",
-    label: "LinkedIn",
-    icon: FaLinkedinIn,
-  },
-  {
-    href: "https://www.instagram.com/av_ihs_",
-    label: "Instagram",
-    icon: AiFillInstagram,
-  },
-];
+import { SITE_AUTHOR, SOCIAL_LINKS } from "../constants/site";
 
 function Footer() {
   let date = new Date();
@@ -45,7 +17,7 @@ function Footer() {
               rel="noopener noreferrer"
               className="text-mintGlass no-underline"
             >
-              Shiva Bhusal.
+              {SITE_AUTHOR}.
             </a>
           </h3>
         </div>
@@ -54,7 +26,7 @@ function Footer() {
         </div>
         <div>
           <ul className="m-0 flex list-none justify-center gap-3 p-0 md:justify-end">
-            {footerSocialLinks.map(({ href, icon: Icon, label }) => (
+            {SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (
               <li key={label}>
                 <a
                   href={href}

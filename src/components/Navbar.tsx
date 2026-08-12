@@ -5,42 +5,12 @@ import logo from "../Assets/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CgGitFork } from "react-icons/cg";
+import { AiFillStar } from "react-icons/ai";
 import {
-  AiFillStar,
-  AiOutlineHome,
-  AiOutlineFundProjectionScreen,
-  AiOutlineUser,
-} from "react-icons/ai";
-
-import { CgFileDocument } from "react-icons/cg";
-
-const navItems = [
-  {
-    path: "/",
-    label: "Home",
-    icon: AiOutlineHome,
-  },
-  {
-    path: "/about",
-    label: "About",
-    icon: AiOutlineUser,
-  },
-  {
-    path: "/project",
-    label: "Projects",
-    icon: AiOutlineFundProjectionScreen,
-  },
-  {
-    path: "/blogs",
-    label: "Blogs",
-    icon: CgFileDocument,
-  },
-  {
-    path: "/resume",
-    label: "Resume",
-    icon: CgFileDocument,
-  },
-];
+  NAV_ITEMS,
+  PORTFOLIO_REPO_URL,
+  SITE_AUTHOR,
+} from "../constants/site";
 
 function NavBar() {
   const [expand, updateExpanded] = useState(false);
@@ -72,7 +42,7 @@ function NavBar() {
           className="inline-flex items-center gap-3 text-white no-underline"
           onClick={() => updateExpanded(false)}
         >
-          <img src={logo.src} className="h-9 w-auto" alt="Shiva Bhusal" />
+          <img src={logo.src} className="h-9 w-auto" alt={SITE_AUTHOR} />
         </Link>
 
         <button
@@ -108,7 +78,7 @@ function NavBar() {
           }`}
         >
           <div className="flex flex-col gap-2 md:flex-row md:items-center">
-            {navItems.map((item) => {
+            {NAV_ITEMS.map((item) => {
               const active = pathname === item.path;
               const Icon = item.icon;
 
@@ -130,7 +100,7 @@ function NavBar() {
             })}
 
             <a
-              href="https://github.com/aviihs/Portfolio"
+              href={PORTFOLIO_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-violetMist/40 bg-violetMist/15 px-4 py-2 text-sm font-bold text-white no-underline transition hover:bg-violetMist/25"
