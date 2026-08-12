@@ -5,20 +5,14 @@ import {
   MotionBlock,
 } from "../../../components/Blogs/BlogMotion";
 import Particle from "../../../components/Particle";
-import {
-  DEFAULT_AUTHOR_NAME,
-  BLOG_CARD_COPY,
-} from "../../../constants/blogs";
+import { DEFAULT_AUTHOR_NAME, BLOG_CARD_COPY } from "../../../constants/blogs";
 import { formatBlogDetailDate } from "../../../lib/blog-utils";
 import {
   fetchWordPressGraphQL,
   GET_BLOG_BY_SLUG,
 } from "../../../lib/wordpress";
 import type { Blog } from "../../../types/blog";
-import {
-  DEFAULT_SEO,
-  SITE_URL,
-} from "../../../constants/seo";
+import { DEFAULT_SEO, SITE_URL } from "../../../constants/seo";
 import { stripHtml } from "../../../lib/blog-utils";
 
 async function getBlog(slug: string): Promise<Blog | null> {
@@ -30,7 +24,7 @@ async function getBlog(slug: string): Promise<Blog | null> {
       {
         slug,
       },
-      { revalidate: 60 }
+      { revalidate: 60 },
     );
 
     return data?.post ?? null;
@@ -46,9 +40,7 @@ type BlogPageProps = {
   };
 };
 
-export async function generateMetadata({
-  params,
-}: BlogPageProps) {
+export async function generateMetadata({ params }: BlogPageProps) {
   const blog = await getBlog(params.slug);
 
   if (!blog) {
@@ -59,9 +51,7 @@ export async function generateMetadata({
 
   const title = blog.seo?.title || blog.title;
   const description =
-    blog.seo?.metaDesc ||
-    blog.blog?.subtitle ||
-    stripHtml(blog.excerpt);
+    blog.seo?.metaDesc || blog.blog?.subtitle || stripHtml(blog.excerpt);
   const image = blog.featuredImage?.node;
   const canonical = blog.seo?.canonical || `/blogs/${blog.slug}`;
 
@@ -75,9 +65,7 @@ export async function generateMetadata({
 
     openGraph: {
       type: "article",
-      url: canonical.startsWith("http")
-        ? canonical
-        : `${SITE_URL}${canonical}`,
+      url: canonical.startsWith("http") ? canonical : `${SITE_URL}${canonical}`,
       title,
       description,
       publishedTime: blog.date,
@@ -104,9 +92,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogDetailPage({
-  params,
-}: BlogPageProps) {
+export default async function BlogDetailPage({ params }: BlogPageProps) {
   const blog = await getBlog(params.slug);
 
   if (!blog) {
@@ -117,8 +103,7 @@ export default async function BlogDetailPage({
 
   const author = blog.author?.node;
 
-  const relatedPosts =
-    blog.blog?.relatedPosts?.nodes || [];
+  const relatedPosts = blog.blog?.relatedPosts?.nodes || [];
 
   const publishedDate = formatBlogDetailDate(blog.date);
   const articleSchema = {
@@ -126,9 +111,7 @@ export default async function BlogDetailPage({
     "@type": "BlogPosting",
     headline: blog.title,
     description:
-      blog.seo?.metaDesc ||
-      blog.blog?.subtitle ||
-      stripHtml(blog.excerpt),
+      blog.seo?.metaDesc || blog.blog?.subtitle || stripHtml(blog.excerpt),
     image: image?.sourceUrl || `${SITE_URL}${DEFAULT_SEO.image}`,
     datePublished: blog.date,
     dateModified: blog.modified,
@@ -215,9 +198,7 @@ export default async function BlogDetailPage({
                   {blog.blog?.readingTime && (
                     <>
                       <span>•</span>
-                      <span>
-                        {blog.blog.readingTime} min read
-                      </span>
+                      <span>{blog.blog.readingTime} min read</span>
                     </>
                   )}
                 </div>
@@ -234,10 +215,7 @@ export default async function BlogDetailPage({
           <div className="mt-10 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] shadow-glow">
             <img
               src={image.sourceUrl}
-              alt={
-                image.altText ||
-                blog.title
-              }
+              alt={image.altText || blog.title}
               className="max-h-[580px] w-full object-cover"
             />
           </div>
@@ -280,8 +258,7 @@ export default async function BlogDetailPage({
 
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               {relatedPosts.map((post) => {
-                const relatedImage =
-                  post.featuredImage?.node;
+                const relatedImage = post.featuredImage?.node;
 
                 return (
                   <Link
@@ -291,13 +268,8 @@ export default async function BlogDetailPage({
                   >
                     {relatedImage?.sourceUrl && (
                       <img
-                        src={
-                          relatedImage.sourceUrl
-                        }
-                        alt={
-                          relatedImage.altText ||
-                          post.title
-                        }
+                        src={relatedImage.sourceUrl}
+                        alt={relatedImage.altText || post.title}
                         className="h-48 w-full object-cover transition duration-700 group-hover:scale-105"
                       />
                     )}
@@ -311,8 +283,7 @@ export default async function BlogDetailPage({
                         <div
                           className="mt-3 line-clamp-3 text-sm leading-7 text-white/58"
                           dangerouslySetInnerHTML={{
-                            __html:
-                              post.excerpt,
+                            __html: post.excerpt,
                           }}
                         />
                       )}
