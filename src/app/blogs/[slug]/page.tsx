@@ -244,7 +244,7 @@ export default async function BlogDetailPage({
         )}
 
         <div
-          className="blog-content mx-auto mt-12 max-w-3xl"
+          className="blog-content mx-auto mt-12 max-w-5xl"
           dangerouslySetInnerHTML={{
             __html: blog.content || "",
           }}
