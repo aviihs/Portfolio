@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import About from "../../components/About/About";
+import { createPageMetadata, SITE_PAGES } from "../../constants/seo";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Learn about Shiva Bhusal, a Nepal-based developer focused on React, React Native, PHP, WordPress, Figma, SEO, and product development.",
-  alternates: {
-    canonical: "/about",
-  },
-};
+const aboutSeo = SITE_PAGES.find((page) => page.path === "/about")!;
+
+export const metadata: Metadata = createPageMetadata(aboutSeo);
 
 export default function AboutPage() {
   return <About />;

@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import Projects from "../../components/Projects/Projects";
+import { createPageMetadata, SITE_PAGES } from "../../constants/seo";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "Explore Shiva Bhusal's recent web development, React Native, PHP, MySQL, WebSocket, and music projects.",
-  alternates: {
-    canonical: "/project",
-  },
-};
+const projectSeo = SITE_PAGES.find((page) => page.path === "/project")!;
+
+export const metadata: Metadata = createPageMetadata(projectSeo);
 
 export default function ProjectPage() {
   return <Projects />;

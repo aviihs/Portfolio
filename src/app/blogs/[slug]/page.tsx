@@ -15,6 +15,11 @@ import {
   GET_BLOG_BY_SLUG,
 } from "../../../lib/wordpress";
 import type { Blog } from "../../../types/blog";
+import {
+  DEFAULT_SEO,
+  SITE_URL,
+} from "../../../constants/seo";
+import { stripHtml } from "../../../lib/blog-utils";
 
 async function getBlog(slug: string): Promise<Blog | null> {
   try {
@@ -52,42 +57,49 @@ export async function generateMetadata({
     };
   }
 
-  return {
-    title:
-      blog.seo?.title ||
-      blog.title,
+  const title = blog.seo?.title || blog.title;
+  const description =
+    blog.seo?.metaDesc ||
+    blog.blog?.subtitle ||
+    stripHtml(blog.excerpt);
+  const image = blog.featuredImage?.node;
+  const canonical = blog.seo?.canonical || `/blogs/${blog.slug}`;
 
-    description:
-      blog.seo?.metaDesc ||
-      blog.blog?.subtitle ||
-      undefined,
+  return {
+    title,
+    description,
 
     alternates: {
-      canonical:
-        blog.seo?.canonical ||
-        `/blogs/${blog.slug}`,
+      canonical,
     },
 
     openGraph: {
-      title:
-        blog.seo?.title ||
-        blog.title,
+      type: "article",
+      url: canonical.startsWith("http")
+        ? canonical
+        : `${SITE_URL}${canonical}`,
+      title,
+      description,
+      publishedTime: blog.date,
+      modifiedTime: blog.modified,
+      authors: [DEFAULT_AUTHOR_NAME],
+      tags: blog.tags?.nodes.map((tag) => tag.name),
 
-      description:
-        blog.seo?.metaDesc ||
-        blog.blog?.subtitle ||
-        undefined,
-
-      images: blog.featuredImage?.node?.sourceUrl
+      images: image?.sourceUrl
         ? [
             {
-              url: blog.featuredImage.node.sourceUrl,
-              alt:
-                blog.featuredImage.node.altText ||
-                blog.title,
+              url: image.sourceUrl,
+              alt: image.altText || blog.title,
             },
           ]
-        : [],
+        : [DEFAULT_SEO.image],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image?.sourceUrl || DEFAULT_SEO.image],
     },
   };
 }
@@ -109,9 +121,36 @@ export default async function BlogDetailPage({
     blog.blog?.relatedPosts?.nodes || [];
 
   const publishedDate = formatBlogDetailDate(blog.date);
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    description:
+      blog.seo?.metaDesc ||
+      blog.blog?.subtitle ||
+      stripHtml(blog.excerpt),
+    image: image?.sourceUrl || `${SITE_URL}${DEFAULT_SEO.image}`,
+    datePublished: blog.date,
+    dateModified: blog.modified,
+    author: {
+      "@type": "Person",
+      name: author?.name || DEFAULT_AUTHOR_NAME,
+    },
+    publisher: {
+      "@type": "Person",
+      name: DEFAULT_AUTHOR_NAME,
+    },
+    mainEntityOfPage: `${SITE_URL}/blogs/${blog.slug}`,
+  };
 
   return (
     <main className="min-h-screen overflow-hidden px-4 py-24 text-white sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_18%_8%,rgba(88,230,198,0.13),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(199,112,240,0.18),transparent_30%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
       <Particle />
 

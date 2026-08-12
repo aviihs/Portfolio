@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import Resume from "../../components/Resume/ResumeNew";
+import { createPageMetadata, SITE_PAGES } from "../../constants/seo";
 
-export const metadata: Metadata = {
-  title: "Resume",
-  description:
-    "View and download Shiva Bhusal's resume for full stack development, React Native, PHP, WordPress, and SEO work.",
-  alternates: {
-    canonical: "/resume",
-  },
-};
+const resumeSeo = SITE_PAGES.find((page) => page.path === "/resume")!;
+
+export const metadata: Metadata = createPageMetadata(resumeSeo);
 
 export default function ResumePage() {
   return <Resume />;

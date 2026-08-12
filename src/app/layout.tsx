@@ -1,33 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientShell from "../components/Layout/ClientShell";
-
-const siteUrl = "https://bhusalshiva.com.np";
-const title = "Shiva Bhusal | Full Stack & React Native Developer from Nepal";
-const description =
-  "Shiva Bhusal is a Full Stack Developer and React Native Engineer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music.";
+import {
+  DEFAULT_SEO,
+  PERSON_SCHEMA,
+  SEO_KEYWORDS,
+  SITE_URL,
+  WEBSITE_SCHEMA,
+} from "../constants/seo";
+import { SITE_AUTHOR } from "../constants/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: title,
-    template: "%s | Shiva Bhusal",
+    default: DEFAULT_SEO.title,
+    template: `%s | ${SITE_AUTHOR}`,
   },
-  description,
-  keywords: [
-    "Shiva Bhusal",
-    "Bhusal Shiva",
-    "Shiva Waling",
-    "Full Stack Developer Nepal",
-    "React Developer Nepal",
-    "React Native Developer Nepal",
-    "Web Developer Nepal",
-    "App Developer Nepal",
-    "PHP Developer Nepal",
-    "WordPress Developer Nepal",
-    "SEO Expert Nepal",
-  ],
-  authors: [{ name: "Shiva Bhusal" }],
+  description: DEFAULT_SEO.description,
+  keywords: SEO_KEYWORDS,
+  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
+  creator: SITE_AUTHOR,
+  publisher: SITE_AUTHOR,
+  category: "Portfolio",
   icons: {
     icon: [
       {
@@ -45,30 +39,35 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    title,
-    description:
-      "Full Stack & React Native Developer from Nepal, skilled in Web Development, PHP, WordPress, SEO, and Music.",
-    images: ["/og-image.png"],
-    videos: ["https://www.youtube.com/embed/KwApRqUZDGc"],
-  },
-  twitter: {
-    card: "player",
-    title: "Shiva Bhusal | Full Stack & React Native Developer",
-    description:
-      "Full Stack & React Native Developer from Nepal, skilled in React, PHP, WordPress, SEO, and Music.",
-    images: ["/og-image.png"],
-    players: [
+    title: DEFAULT_SEO.title,
+    description: DEFAULT_SEO.description,
+    siteName: `${SITE_AUTHOR} Portfolio`,
+    locale: "en_US",
+    images: [
       {
-        playerUrl: "https://www.youtube.com/embed/KwApRqUZDGc",
-        streamUrl: "https://www.youtube.com/embed/KwApRqUZDGc",
-        width: 1280,
-        height: 720,
+        url: DEFAULT_SEO.image,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_AUTHOR} portfolio preview`,
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_SEO.title,
+    description: DEFAULT_SEO.description,
+    images: [DEFAULT_SEO.image],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -77,30 +76,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const personSchema = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Shiva Bhusal",
-    url: siteUrl,
-    sameAs: [
-      "https://www.youtube.com/@avihs010",
-      "https://www.linkedin.com/in/shiva-bhusal-9409152a6/",
-      "https://github.com/aviihs",
-      "https://www.instagram.com/av_ihs_/",
-      "https://www.facebook.com/shiva01000",
-    ],
-    jobTitle: "Full Stack Developer & React Native Engineer",
-    image: `${siteUrl}/og-image.png`,
-    description:
-      "Full Stack Developer from Nepal skilled in React, React Native, PHP, WordPress, SEO, and Music.",
-  };
-
   return (
     <html lang="en">
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([PERSON_SCHEMA, WEBSITE_SCHEMA]),
+          }}
         />
         <ClientShell>{children}</ClientShell>
       </body>
