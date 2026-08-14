@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import {
-  PORTFOLIO_REPO_URL,
-  SITE_AUTHOR,
-  SOCIAL_LINKS,
-} from "./site";
+import { PORTFOLIO_REPO_URL, SITE_AUTHOR, SOCIAL_LINKS } from "./site";
 
 export const SITE_URL = "https://bhusalshiva.com.np";
 
@@ -78,10 +74,7 @@ export const PERSON_SCHEMA = {
   jobTitle: "Full Stack Developer & React Native Engineer",
   description:
     "Full Stack Developer from Nepal skilled in React, React Native, Next.js, PHP, WordPress, SEO, Figma, and music.",
-  sameAs: [
-    ...SOCIAL_LINKS.map((link) => link.href),
-    PORTFOLIO_REPO_URL,
-  ],
+  sameAs: [...SOCIAL_LINKS.map((link) => link.href), PORTFOLIO_REPO_URL],
   knowsAbout: [
     "React",
     "Next.js",
@@ -126,15 +119,12 @@ export function createPageMetadata({
     title,
     description,
     alternates: {
-      canonical: path,
+      canonical: url,
     },
     openGraph: {
       type,
       url,
-      title:
-        title === DEFAULT_SEO.title
-          ? title
-          : `${title} | ${SITE_AUTHOR}`,
+      title: title === DEFAULT_SEO.title ? title : `${title} | ${SITE_AUTHOR}`,
       description,
       siteName: `${SITE_AUTHOR} Portfolio`,
       images: [
@@ -148,10 +138,7 @@ export function createPageMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title:
-        title === DEFAULT_SEO.title
-          ? title
-          : `${title} | ${SITE_AUTHOR}`,
+      title: title === DEFAULT_SEO.title ? title : `${title} | ${SITE_AUTHOR}`,
       description,
       images: [image],
     },

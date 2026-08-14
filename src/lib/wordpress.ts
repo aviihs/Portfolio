@@ -57,6 +57,26 @@ export const GET_BLOGS = `
   }
 `;
 
+export const GET_BLOGS_FOR_SITEMAP = `
+  query GetBlogsForSitemap($first: Int!, $after: String) {
+    posts(
+      first: $first
+      after: $after
+      where: { status: PUBLISH }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+
+      nodes {
+        slug
+        modified
+      }
+    }
+  }
+`;
+
 export const GET_BLOG_BY_SLUG = `
   query GetBlogBySlug($slug: ID!) {
     post(id: $slug, idType: SLUG) {
@@ -147,7 +167,7 @@ type FetchGraphQLOptions = {
 export async function fetchWordPressGraphQL<T>(
   query: string,
   variables?: Record<string, unknown>,
-  options: FetchGraphQLOptions = {}
+  options: FetchGraphQLOptions = {},
 ) {
   const response = await fetch(WORDPRESS_GRAPHQL_URL, {
     method: "POST",
@@ -169,7 +189,7 @@ export async function fetchWordPressGraphQL<T>(
     console.error(
       "WordPress GraphQL error:",
       response.status,
-      text.slice(0, 1000)
+      text.slice(0, 1000),
     );
 
     throw new Error("WordPress GraphQL request failed");
@@ -180,10 +200,7 @@ export async function fetchWordPressGraphQL<T>(
   try {
     result = JSON.parse(text);
   } catch {
-    console.error(
-      "WordPress GraphQL returned non-JSON:",
-      text.slice(0, 1000)
-    );
+    console.error("WordPress GraphQL returned non-JSON:", text.slice(0, 1000));
 
     throw new Error("WordPress returned invalid JSON");
   }
