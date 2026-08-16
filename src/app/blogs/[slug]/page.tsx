@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
   const description =
     blog.seo?.metaDesc || blog.blog?.subtitle || stripHtml(blog.excerpt);
   const image = blog.featuredImage?.node;
-  const canonical = blog.seo?.canonical || `/blogs/${blog.slug}`;
+  const canonical = `${SITE_URL}/blogs/${blog.slug}`;
 
   return {
     title,
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
 
     openGraph: {
       type: "article",
-      url: canonical.startsWith("http") ? canonical : `${SITE_URL}${canonical}`,
+      url: canonical,
       title,
       description,
       publishedTime: blog.date,
