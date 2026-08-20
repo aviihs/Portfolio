@@ -23,8 +23,8 @@ export const ABOUT_HIGHLIGHTS = [
 ];
 
 export const ABOUT_METRICS = [
-  ["MERN", "Primary stack"],
-  ["React Native", "Mobile focus"],
+  ["MERN, Next.js", "Primary stack"],
+  ["Flutter", "Mobile focus"],
   ["WordPress", "CMS experience"],
   ["Figma", "Design workflow"],
 ];

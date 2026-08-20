@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import Particle from "../Particle";
 import {
   BLOG_CARD_COPY,
-  BLOGS_PER_PAGE,
   DEFAULT_AUTHOR_NAME,
 } from "../../constants/blogs";
 import {
@@ -14,15 +13,13 @@ import {
   stripHtml,
 } from "../../lib/blog-utils";
 import type { Blog, BlogConnection } from "../../types/blog";
-
-const blogCache = new Map<string, BlogConnection>();
-
-function getCacheKey(after: string | null) {
-  return after || "first-page";
-}
+import {
+  getCachedBlogs,
+  requestBlogs,
+} from "../../lib/blog-client";
 
 export default function Blogs() {
-  const firstPageCache = blogCache.get(getCacheKey(null));
+  const firstPageCache = getCachedBlogs(null);
 
   const [blogs, setBlogs] = useState<Blog[]>(
     firstPageCache?.nodes || []
@@ -45,8 +42,7 @@ export default function Blogs() {
 
   const fetchBlogs = useCallback(
     async (after: string | null, showLoader = true) => {
-      const cacheKey = getCacheKey(after);
-      const cachedData = blogCache.get(cacheKey);
+      const cachedData = getCachedBlogs(after);
 
       if (cachedData) {
         setBlogs(cachedData.nodes);
@@ -63,20 +59,9 @@ export default function Blogs() {
       abortControllerRef.current = controller;
 
       try {
-        const url = new URL("/api/blogs", window.location.origin);
-        url.searchParams.set("first", String(BLOGS_PER_PAGE));
-        if (after) url.searchParams.set("after", after);
-
-        const response = await fetch(url.toString(), {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch blogs");
-
-        const data: BlogConnection = await response.json();
+        const data = await requestBlogs(after, controller.signal);
 
         // cache and update state
-        blogCache.set(cacheKey, data);
         setBlogs(data.nodes);
         setPageInfo(data.pageInfo);
         setError("");
@@ -103,24 +88,20 @@ export default function Blogs() {
     if (!pageInfo?.endCursor) return;
 
     const nextAfter = pageInfo.endCursor;
-    const cacheKey = getCacheKey(nextAfter);
-
     setCursorHistory((prev) => [...prev, nextAfter]);
     setCurrentPage((prev) => prev + 1);
 
-    fetchBlogs(nextAfter, !blogCache.has(cacheKey));
+    fetchBlogs(nextAfter, !getCachedBlogs(nextAfter));
   }
 
   function goPrevious() {
     if (currentPage <= 1) return;
 
     const previousCursor = cursorHistory[currentPage - 2] ?? null;
-    const cacheKey = getCacheKey(previousCursor);
-
     setCursorHistory((prev) => prev.slice(0, -1));
     setCurrentPage((prev) => prev - 1);
 
-    fetchBlogs(previousCursor, !blogCache.has(cacheKey));
+    fetchBlogs(previousCursor, !getCachedBlogs(previousCursor));
   }
 
   if (loading) {

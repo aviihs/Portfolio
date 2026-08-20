@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 export const WORDPRESS_GRAPHQL_URL =
   process.env.WORDPRESS_GRAPHQL_URL ||
   "https://dev-blog-post-cms.pantheonsite.io/graphql";
@@ -213,3 +215,33 @@ export async function fetchWordPressGraphQL<T>(
 
   return result.data;
 }
+
+export const getCachedBlogs = unstable_cache(
+  async (first: number, after: string | null) => {
+    const data = await fetchWordPressGraphQL<{ posts: unknown }>(
+      GET_BLOGS,
+      { first, after },
+      { revalidate: 60 },
+    );
+
+    return data?.posts;
+  },
+  ["wordpress-blogs"],
+  { revalidate: 60 },
+);
+
+export const getCachedBlogBySlug = unstable_cache(
+  async (slug: string) => {
+    const data = await fetchWordPressGraphQL<{
+      post: unknown;
+    }>(
+      GET_BLOG_BY_SLUG,
+      { slug },
+      { revalidate: 60 },
+    );
+
+    return data?.post;
+  },
+  ["wordpress-blog-by-slug"],
+  { revalidate: 60 },
+);

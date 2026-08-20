@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { cache } from "react";
 import {
   MotionArticle,
   MotionBlock,
@@ -8,31 +9,20 @@ import Particle from "../../../components/Particle";
 import { DEFAULT_AUTHOR_NAME, BLOG_CARD_COPY } from "../../../constants/blogs";
 import { formatBlogDetailDate } from "../../../lib/blog-utils";
 import {
-  fetchWordPressGraphQL,
-  GET_BLOG_BY_SLUG,
+  getCachedBlogBySlug,
 } from "../../../lib/wordpress";
 import type { Blog } from "../../../types/blog";
 import { DEFAULT_SEO, SITE_URL } from "../../../constants/seo";
 import { stripHtml } from "../../../lib/blog-utils";
 
-async function getBlog(slug: string): Promise<Blog | null> {
+const getBlog = cache(async (slug: string): Promise<Blog | null> => {
   try {
-    const data = await fetchWordPressGraphQL<{
-      post: Blog | null;
-    }>(
-      GET_BLOG_BY_SLUG,
-      {
-        slug,
-      },
-      { revalidate: 60 },
-    );
-
-    return data?.post ?? null;
+    return (await getCachedBlogBySlug(slug)) as Blog | null;
   } catch (error) {
     console.error("Failed to load blog by slug:", error);
     return null;
   }
-}
+});
 
 type BlogPageProps = {
   params: {

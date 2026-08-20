@@ -6,6 +6,7 @@ import homeLogo from "../../Assets/home-main.svg";
 import Particle from "../Particle";
 import Home2 from "./Home2";
 import Type from "./Type";
+import BlogPrefetch from "../Blogs/BlogPrefetch";
 import { fadeUp, scaleIn, viewportFadeUp } from "../../constants/animations";
 import {
   SITE_AUTHOR,
@@ -16,6 +17,7 @@ import {
 function Home() {
   return (
     <section className="overflow-hidden">
+      <BlogPrefetch />
       <div
         className="relative min-h-screen px-4 pt-28 text-white sm:px-6 lg:px-8"
         id="home"
