@@ -17,6 +17,7 @@ type ProjectCardProps = {
   ghLink?: string;
   imgPath?: { src: string } | string;
   isBlog?: boolean;
+  tags?: string[];
   title: string;
   videoLink?: string;
 };
@@ -29,6 +30,7 @@ function ProjectCards({
   ghLink,
   imgPath,
   isBlog,
+  tags,
   title,
   videoLink,
 }: ProjectCardProps) {
@@ -73,6 +75,19 @@ function ProjectCards({
         <h3 className="mb-4 text-xl font-black leading-snug">
           {title}
         </h3>
+
+        {tags && tags.length > 0 && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-white/55"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="flex-1 text-justify text-sm leading-7 text-white/65">
           {description}
