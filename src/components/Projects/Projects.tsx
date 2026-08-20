@@ -107,6 +107,16 @@ function Projects() {
                 >
                   {PROJECT_COPY.sourceCode} <BsArrowUpRight />
                 </a>
+                {FEATURED_PROJECT.designLink && FEATURED_PROJECT.designLink !== "#" && (
+                  <a
+                    href={FEATURED_PROJECT.designLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-violetMist/30 bg-violetMist/10 px-5 py-3 font-bold text-violet-100 no-underline transition hover:border-violetMist/60 hover:bg-violetMist/20"
+                  >
+                    {PROJECT_COPY.designFile} <BsArrowUpRight />
+                  </a>
+                )}
               </div>
             </div>
           </div>

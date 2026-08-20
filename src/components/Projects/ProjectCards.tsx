@@ -13,6 +13,7 @@ type ProjectCardProps = {
   accent?: "mint" | "violet" | "amber";
   demoLink?: string;
   description: ReactNode;
+  designLink?: string;
   ghLink?: string;
   imgPath?: { src: string } | string;
   isBlog?: boolean;
@@ -24,6 +25,7 @@ function ProjectCards({
   accent = "mint",
   demoLink,
   description,
+  designLink,
   ghLink,
   imgPath,
   isBlog,
@@ -98,6 +100,16 @@ function ProjectCards({
           >
             <CgWebsite /> {PROJECT_CARD_COPY.demo}
           </a>
+          )}
+          {!isBlog && designLink && designLink !== "#" && (
+            <a
+              href={designLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-violetMist/30 bg-violetMist/10 px-4 py-2 text-sm font-bold text-violet-100 no-underline transition hover:border-violetMist/60 hover:bg-violetMist/20"
+            >
+              Figma ↗
+            </a>
           )}
         </div>
       </div>
