@@ -16,58 +16,34 @@ function Home2() {
             transition={{ duration: 0.55 }}
             className="rounded-[1.5rem] border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-8"
           >
-            <h2 className="text-3xl font-black sm:text-5xl">
-              LET ME <span className="text-mintGlass"> INTRODUCE </span> MYSELF
+            <span className="text-xs font-black uppercase tracking-[0.24em] text-mintGlass">
+              A little about my approach
+            </span>
+            <h2 className="mt-4 text-3xl font-black sm:text-5xl">
+              Thoughtful products, built from the <span className="text-mintGlass">inside out.</span>
             </h2>
-            <p className="mt-6 text-justify text-base leading-8 text-white/70">
-              I’m a Software Engineer passionate about transforming ideas into
-              reliable, scalable, and high-performance digital products. I enjoy
-              solving real-world problems and crafting systems that balance
-              performance with great user experience.
-              <br />
-              <br />
-              My technical background includes
-              <i>
-                <b className="text-mintGlass">
-                  {" "}
-                  JavaScript, Php, C, Node.js, Wordpress, TailwindCss, React Native, Figma{" "}
-                </b>
-              </i>
-              enabling me to work across both backend and frontend ecosystems. I
-              have strong expertise in
-              <b className="text-mintGlass"> React and Figma </b>
-              along with intermediate experience in
-              <b className="text-mintGlass"> WordPress</b>.
-              <br />
-              <br />
-              Lately, I’ve been increasingly focused on
-              <b className="text-mintGlass"> Application Development</b>, building fast,
-              intuitive, and user-centric products.
-              <br />
-              <br />
-              Beyond technology, I have a deep passion for music. I enjoy
-              playing guitar and have also explored music production. I’ve
-              released an original song on YouTube titled{" "}
-              <b > <a
+            <p className="mt-6 text-base leading-8 text-white/70">
+              I enjoy taking a product from its first rough idea to a reliable thing people can use.
+              That means shaping the interface, designing the data flow, building the API, and
+              refining the details that make software feel effortless.
+            </p>
+            <p className="mt-5 text-base leading-8 text-white/70">
+              My day-to-day toolkit includes <strong className="text-mintGlass">React, Next.js,
+              Node.js, WordPress, React Native, and Figma</strong>. I care about performance,
+              maintainability, and clean experiences that work just as well on a phone as they do
+              on a large screen.
+            </p>
+            <p className="mt-5 text-base leading-8 text-white/70">
+              Outside software, music keeps me curious. I play guitar, experiment with production,
+              and share original work such as{" "}
+              <a
                 href="https://www.youtube.com/@avihs010"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-mintGlass no-underline"
+                className="font-bold text-mintGlass no-underline hover:text-white"
               >
-              Nyano Jhari
-              </a></b>.
-              <br />
-              <br />
-              While coding is my profession, music remains my creative escape, a
-              space where I explore, express, and recharge.
-              <br />
-              <br />
-              Whenever possible, I love building projects with
-              <b className="text-mintGlass"> Node.js </b> and modern frameworks like{" "}
-              <i>
-                <b className="text-mintGlass">React.js</b> and{" "}
-                <b className="text-mintGlass">Next.js</b>.
-              </i>
+                Nyano Jhari
+              </a>.
             </p>
           </motion.div>
           <motion.div

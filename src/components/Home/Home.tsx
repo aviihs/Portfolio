@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import homeLogo from "../../Assets/home-main.svg";
 import Particle from "../Particle";
@@ -26,44 +27,54 @@ function Home() {
         <Particle />
         <div className="mx-auto grid max-w-7xl items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr]">
           <motion.div {...fadeUp}>
-              <h1 className="text-2xl font-bold text-white/80 sm:text-3xl">
-                Hi There!{" "}
-                <span
-                  className="inline-block origin-[70%_70%] animate-[wave_2.1s_infinite]"
-                  role="img"
-                  aria-labelledby="wave"
-                >
-                  👋🏻
-                </span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-mintGlass/20 bg-mintGlass/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-mintGlass">
+                <span className="h-2 w-2 rounded-full bg-mintGlass shadow-[0_0_14px_rgba(88,230,198,0.9)]" />
+                Software engineer · Product builder
+              </div>
+
+              <h1 className="mt-7 max-w-4xl text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
+                I build digital products that feel{" "}
+                <strong className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
+                  clear, fast, and human.
+                </strong>
               </h1>
 
-              <h2 className="mt-5 text-5xl font-black leading-tight sm:text-7xl lg:text-8xl">
-                I'M
-                <strong className="block bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
-                  {SITE_AUTHOR}.
-                </strong>
-              </h2>
+              <p className="mt-7 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
+                I&apos;m {SITE_AUTHOR}, a full-stack and mobile developer from Kathmandu. I turn
+                thoughtful ideas into dependable interfaces, APIs, and products people enjoy using.
+              </p>
 
-              <div className="mt-8 text-2xl font-bold text-mintGlass sm:text-3xl">
+              <div className="mt-8 text-xl font-bold text-mintGlass sm:text-2xl">
                 <Type />
+              </div>
 
-                  <a
-                    href={UPWORK_PROFILE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-9 inline-flex items-center justify-center rounded-full bg-mintGlass px-6 py-3 text-base font-black text-ink no-underline shadow-glow transition hover:-translate-y-1 hover:bg-white"
-                  >
-                    Start a Project
-                  </a>
-                  
-                </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/project"
+                  className="inline-flex items-center justify-center rounded-full bg-mintGlass px-6 py-3 text-base font-black text-ink no-underline shadow-glow transition hover:-translate-y-1 hover:bg-white"
+                >
+                  Explore my work <span className="ml-2">↗</span>
+                </Link>
+                <a
+                  href={UPWORK_PROFILE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-6 py-3 text-base font-bold text-white no-underline transition hover:-translate-y-1 hover:border-mintGlass/45 hover:text-mintGlass"
+                >
+                  Start a conversation
+                </a>
+              </div>
+
+              <p className="mt-7 text-sm font-semibold text-white/40">
+                Kathmandu, Nepal <span className="mx-2 text-mintGlass/60">•</span> Web, mobile &amp; product engineering
+              </p>
           </motion.div>
 
           <motion.div {...scaleIn} className="relative">
             <div className="absolute inset-8 rounded-full bg-violetMist/20 blur-3xl" />
               <img
                 src={homeLogo.src}
-                alt="home pic"
+                alt={`${SITE_AUTHOR} workspace illustration`}
                 className="relative mx-auto max-h-[460px] w-full max-w-md"
               />
           </motion.div>
@@ -76,9 +87,9 @@ function Home() {
           {...viewportFadeUp}
           className="mx-auto max-w-4xl"
         >
-            <h2 className="text-3xl font-black">Find Me On</h2>
+            <h2 className="text-3xl font-black sm:text-4xl">Let&apos;s build something useful.</h2>
             <p className="mt-3 text-white/60">
-              Feel free to <span className="text-mintGlass">connect </span>with me
+              Find me online, follow what I&apos;m building, or start a conversation.
             </p>
             <ul className="mt-8 flex list-none flex-wrap justify-center gap-4 p-0">
               {SOCIAL_LINKS.map(({ href, icon: Icon, label }) => (

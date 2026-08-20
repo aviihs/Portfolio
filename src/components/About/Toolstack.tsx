@@ -2,6 +2,7 @@
 
 import {
   SKILL_CARD_CLASS,
+  SKILL_BRAND_COLORS,
   SKILL_IMAGE_CLASS,
   SKILL_TEXT_CLASS,
   TOOL_ITEMS,
@@ -18,7 +19,10 @@ function Toolstack() {
           {item.image ? (
             <img src={item.image} alt={item.alt} className={SKILL_IMAGE_CLASS} />
           ) : Icon ? (
-            <Icon className="text-4xl transition group-hover:scale-110" />
+            <Icon
+              style={{ color: SKILL_BRAND_COLORS[item.label] }}
+              className="text-4xl transition group-hover:scale-110"
+            />
           ) : (
             <div className="grid h-10 min-w-10 place-items-center rounded-xl bg-violetMist/15 px-2 text-xs font-black text-violet-200 transition group-hover:scale-110">
               {item.iconText}
