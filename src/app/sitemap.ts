@@ -34,6 +34,7 @@ async function getAllBlogsForSitemap(): Promise<SitemapBlog[]> {
         after,
       },
       {
+        // revalidate: 0,
         revalidate: 3600,
       }
     );
