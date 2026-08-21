@@ -1,5 +1,3 @@
-"use client";
-
 import { SITE_AUTHOR, SOCIAL_LINKS } from "../constants/site";
 
 function Footer() {

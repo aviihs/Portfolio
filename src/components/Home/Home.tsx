@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import homeLogo from "../../Assets/home-main.svg";
@@ -33,15 +34,15 @@ function Home() {
               </div>
 
               <h1 className="mt-7 max-w-4xl text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
-                I build digital products that feel{" "}
+                It&apos;s me{" "}
                 <strong className="bg-gradient-to-r from-mintGlass via-white to-violetMist bg-clip-text text-transparent">
-                  clear, fast, and human.
+                  SHIVA BHUSAL
                 </strong>
               </h1>
 
               <p className="mt-7 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">
-                I&apos;m {SITE_AUTHOR}, a full-stack and mobile developer from Kathmandu. I turn
-                thoughtful ideas into dependable interfaces, APIs, and products people enjoy using.
+                Full-stack and mobile developer from Kathmandu, building fast and useful digital
+                products.
               </p>
 
               <div className="mt-8 text-xl font-bold text-mintGlass sm:text-2xl">
@@ -72,10 +73,11 @@ function Home() {
 
           <motion.div {...scaleIn} className="relative">
             <div className="absolute inset-8 rounded-full bg-violetMist/20 blur-3xl" />
-              <img
-                src={homeLogo.src}
+              <Image
+                src={homeLogo}
                 alt={`${SITE_AUTHOR} workspace illustration`}
                 className="relative mx-auto max-h-[460px] w-full max-w-md"
+                priority
               />
           </motion.div>
         </div>

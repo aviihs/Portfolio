@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
@@ -63,10 +64,11 @@ function Projects() {
         >
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="relative overflow-hidden rounded-[1.2rem]">
-              <img
-                src={FEATURED_PROJECT.image.src}
+              <Image
+                src={FEATURED_PROJECT.image}
                 alt={FEATURED_PROJECT.imageAlt}
                 className="h-full min-h-72 w-full object-cover"
+                sizes="(min-width: 1024px) 50vw, 100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
             </div>

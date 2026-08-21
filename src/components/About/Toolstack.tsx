@@ -1,5 +1,3 @@
-"use client";
-
 import {
   SKILL_CARD_CLASS,
   SKILL_BRAND_COLORS,

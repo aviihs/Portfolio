@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { CgWebsite } from "react-icons/cg";
@@ -65,6 +63,8 @@ function ProjectCards({
           <img
             src={imageSrc}
             alt={`${title} preview`}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />

@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import GitHubCalendar from "react-github-calendar";
 import { motion } from "framer-motion";

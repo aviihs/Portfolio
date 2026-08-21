@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import logo from "../Assets/logo.png";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CgGitFork } from "react-icons/cg";
@@ -18,14 +19,25 @@ function NavBar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    let frameId = 0;
+
     function scrollHandler() {
-      updateNavbar(window.scrollY >= 20);
+      if (frameId) return;
+
+      frameId = window.requestAnimationFrame(() => {
+        frameId = 0;
+        const shouldUseScrolledStyle = window.scrollY >= 20;
+        updateNavbar(shouldUseScrolledStyle);
+      });
     }
 
     scrollHandler();
     window.addEventListener("scroll", scrollHandler);
 
-    return () => window.removeEventListener("scroll", scrollHandler);
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   return (
@@ -42,7 +54,7 @@ function NavBar() {
           className="inline-flex items-center gap-3 text-white no-underline"
           onClick={() => updateExpanded(false)}
         >
-          <img src={logo.src} className="h-9 w-auto" alt={SITE_AUTHOR} />
+          <Image src={logo} className="h-9 w-auto" alt={SITE_AUTHOR} priority />
         </Link>
 
         <button
