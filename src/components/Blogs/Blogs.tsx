@@ -18,18 +18,18 @@ import {
   requestBlogs,
 } from "../../lib/blog-client";
 
-export default function Blogs() {
-  const [firstPageCache] = useState(() => getCachedBlogs(null));
+type BlogsProps = {
+  initialData?: BlogConnection | null;
+};
 
-  const [blogs, setBlogs] = useState<Blog[]>(
-    firstPageCache?.nodes || []
-  );
+export default function Blogs({ initialData }: BlogsProps) {
+  const [blogs, setBlogs] = useState<Blog[]>(initialData?.nodes || []);
   const [pageInfo, setPageInfo] =
     useState<BlogConnection["pageInfo"] | null>(
-      firstPageCache?.pageInfo || null
+      initialData?.pageInfo || null
     );
 
-  const [loading, setLoading] = useState(!firstPageCache);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState("");
 
   const [cursorHistory, setCursorHistory] = useState<
@@ -77,12 +77,12 @@ export default function Blogs() {
   );
 
   useEffect(() => {
-    fetchBlogs(null, !firstPageCache);
+    fetchBlogs(null, !initialData);
 
     return () => {
       abortControllerRef.current?.abort();
     };
-  }, [fetchBlogs, firstPageCache]);
+  }, [fetchBlogs, initialData]);
 
   function goNext() {
     if (!pageInfo?.endCursor) return;

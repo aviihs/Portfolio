@@ -245,3 +245,33 @@ export const getCachedBlogBySlug = unstable_cache(
   ["wordpress-blog-by-slug"],
   { revalidate: 60 },
 );
+
+type SitemapBlog = { slug: string; modified: string };
+type SitemapResponse = {
+  posts: {
+    pageInfo: { hasNextPage: boolean; endCursor: string | null };
+    nodes: SitemapBlog[];
+  };
+};
+
+export async function getAllBlogSlugs(): Promise<SitemapBlog[]> {
+  const blogs: SitemapBlog[] = [];
+  let after: string | null = null;
+  let hasNextPage = true;
+
+  while (hasNextPage) {
+    const data = await fetchWordPressGraphQL<SitemapResponse>(
+      GET_BLOGS_FOR_SITEMAP,
+      { first: 100, after },
+      { revalidate: 3600 },
+    );
+
+    if (!data?.posts) break;
+
+    blogs.push(...data.posts.nodes);
+    hasNextPage = data.posts.pageInfo.hasNextPage;
+    after = data.posts.pageInfo.endCursor;
+  }
+
+  return blogs;
+}

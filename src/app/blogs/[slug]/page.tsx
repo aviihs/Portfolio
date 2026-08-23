@@ -10,6 +10,7 @@ import { DEFAULT_AUTHOR_NAME, BLOG_CARD_COPY } from "../../../constants/blogs";
 import { formatBlogDetailDate } from "../../../lib/blog-utils";
 import {
   getCachedBlogBySlug,
+  getAllBlogSlugs,
 } from "../../../lib/wordpress";
 import type { Blog } from "../../../types/blog";
 import { DEFAULT_SEO, SITE_URL } from "../../../constants/seo";
@@ -30,6 +31,15 @@ type BlogPageProps = {
   };
 };
 
+export async function generateStaticParams() {
+  try {
+    const slugs = await getAllBlogSlugs();
+    return slugs.map(({ slug }) => ({ slug }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: BlogPageProps) {
   const blog = await getBlog(params.slug);
 
@@ -45,9 +55,17 @@ export async function generateMetadata({ params }: BlogPageProps) {
   const image = blog.featuredImage?.node;
   const canonical = `${SITE_URL}/blogs/${blog.slug}`;
 
+  const keywords = [
+    ...(blog.tags?.nodes.map((tag) => tag.name) || []),
+    ...(blog.categories.nodes.map((cat) => cat.name) || []),
+    "Shiva Bhusal",
+    "Nepal developer blog",
+  ];
+
   return {
     title,
     description,
+    keywords,
 
     alternates: {
       canonical,
@@ -62,6 +80,7 @@ export async function generateMetadata({ params }: BlogPageProps) {
       modifiedTime: blog.modified,
       authors: [DEFAULT_AUTHOR_NAME],
       tags: blog.tags?.nodes.map((tag) => tag.name),
+      section: blog.categories.nodes[0]?.name,
 
       images: image?.sourceUrl
         ? [
@@ -90,30 +109,70 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
   }
 
   const image = blog.featuredImage?.node;
-
   const author = blog.author?.node;
-
   const relatedPosts = blog.blog?.relatedPosts?.nodes || [];
-
   const publishedDate = formatBlogDetailDate(blog.date);
+  const canonical = `${SITE_URL}/blogs/${blog.slug}`;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: blog.title,
     description:
       blog.seo?.metaDesc || blog.blog?.subtitle || stripHtml(blog.excerpt),
-    image: image?.sourceUrl || `${SITE_URL}${DEFAULT_SEO.image}`,
+    image: image?.sourceUrl
+      ? [image.sourceUrl]
+      : [`${SITE_URL}${DEFAULT_SEO.image}`],
+    url: canonical,
+    mainEntityOfPage: canonical,
     datePublished: blog.date,
     dateModified: blog.modified,
+    inLanguage: "en-US",
     author: {
       "@type": "Person",
       name: author?.name || DEFAULT_AUTHOR_NAME,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Person",
       name: DEFAULT_AUTHOR_NAME,
+      url: SITE_URL,
+      image: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}${DEFAULT_SEO.image}`,
+      },
     },
-    mainEntityOfPage: `${SITE_URL}/blogs/${blog.slug}`,
+    ...(blog.categories.nodes[0] && {
+      articleSection: blog.categories.nodes[0].name,
+    }),
+    ...(blog.tags?.nodes.length && {
+      keywords: blog.tags.nodes.map((t) => t.name).join(", "),
+    }),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${SITE_URL}/blogs`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: blog.title,
+        item: canonical,
+      },
+    ],
   };
 
   return (
@@ -122,6 +181,12 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_18%_8%,rgba(88,230,198,0.13),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(199,112,240,0.18),transparent_30%),linear-gradient(135deg,#080A12_0%,#111827_48%,#160B24_100%)]" />
@@ -207,6 +272,7 @@ export default async function BlogDetailPage({ params }: BlogPageProps) {
               src={image.sourceUrl}
               alt={image.altText || blog.title}
               className="max-h-[580px] w-full object-cover"
+              fetchPriority="high"
             />
           </div>
         )}
