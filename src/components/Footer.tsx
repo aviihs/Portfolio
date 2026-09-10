@@ -10,7 +10,7 @@ function Footer() {
           <h3 className="m-0 text-sm">
             Designed and Developed by{" "}
             <a
-              href="https://www.instagram.com/av_ihs_"
+              href="https://www.instagram.com/av_ihs__"
               target="_blank"
               rel="noopener noreferrer"
               className="text-mintGlass no-underline"

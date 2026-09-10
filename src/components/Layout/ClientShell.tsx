@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import ChatWidget from "../Chat/ChatWidget";
 import Footer from "../Footer";
 import NavBar from "../Navbar";
 
@@ -8,6 +9,7 @@ function ClientShell({ children }: { children: ReactNode }) {
       <NavBar />
       {children}
       <Footer />
+      <ChatWidget />
     </div>
   );
 }

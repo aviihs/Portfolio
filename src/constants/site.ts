@@ -28,7 +28,7 @@ export const SOCIAL_LINKS = [
     icon: FaLinkedinIn,
   },
   {
-    href: "https://www.instagram.com/av_ihs_",
+    href: "https://www.instagram.com/av_ihs__",
     label: "Instagram",
     icon: AiFillInstagram,
   },
