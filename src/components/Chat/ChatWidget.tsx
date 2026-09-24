@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BsChatText, BsChevronLeft, BsXLg } from "react-icons/bs";
 import { CHATBOT, type Language } from "../../constants/chatbot";
 import ChatConversation from "./ChatConversation";
@@ -10,6 +10,7 @@ import LanguagePicker from "./LanguagePicker";
 function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [language, setLanguage] = useState<Language | null>(null);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!open) return;
@@ -76,15 +77,56 @@ function ChatWidget() {
         ) : null}
       </AnimatePresence>
 
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        aria-label={open ? "Close chat" : "Open chat"}
-        aria-expanded={open}
-        className="grid h-14 w-14 place-items-center rounded-full bg-mintGlass text-ink shadow-glow transition hover:-translate-y-0.5 hover:bg-white"
-      >
-        {open ? <BsXLg className="text-lg" /> : <BsChatText className="text-xl" />}
-      </button>
+      <div className="relative">
+        {!open && !reduceMotion
+          ? [0, 1].map((ring) => (
+              <motion.span
+                key={ring}
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-full bg-mintGlass"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: [0.9, 2.1], opacity: [0, 0.26, 0] }}
+                transition={{
+                  duration: 3,
+                  times: [0, 0.12, 1],
+                  repeat: Infinity,
+                  ease: "easeOut",
+                  delay: ring * 1.5,
+                }}
+              />
+            ))
+          : null}
+
+        <motion.button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          aria-label={open ? "Close chat" : "Open chat"}
+          aria-expanded={open}
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 220, damping: 24, mass: 0.9 }}
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
+          className="relative grid h-14 w-14 place-items-center rounded-full bg-mintGlass text-ink shadow-glow hover:bg-white"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={open ? "close" : "open"}
+              initial={{ opacity: 0, rotate: -30, scale: 0.7 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 30, scale: 0.7 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="grid place-items-center"
+            >
+              {open ? (
+                <BsXLg className="text-lg" />
+              ) : (
+                <BsChatText className="text-xl" />
+              )}
+            </motion.span>
+          </AnimatePresence>
+        </motion.button>
+      </div>
     </div>
   );
 }
